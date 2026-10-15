@@ -1,0 +1,26 @@
+frr version 8.4.4
+frr defaults datacenter
+hostname {{ inventory_hostname }}
+log syslog informational
+service integrated-vtysh-config
+!
+router bgp {{ bgp_asn }}
+ bgp router-id {{ router_id }}
+ no bgp default ipv4-unicast
+ !
+{% for neighbor in neighbors %}
+ neighbor {{ neighbor.ip }} remote-as {{ neighbor.asn }}
+ neighbor {{ neighbor.ip }} description {{ neighbor.desc }}
+ neighbor {{ neighbor.ip }} bfd
+ !
+{% endfor %}
+ address-family ipv4 unicast
+  network {{ router_id }}/32
+{% for neighbor in neighbors %}
+  neighbor {{ neighbor.ip }} activate
+{% endfor %}
+  maximum-paths 64
+ exit-address-family
+!
+line vty
+!

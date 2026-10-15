@@ -1,0 +1,6 @@
+---
+- name: Provisi Underlay Routing Fabric (eBGP + BFD + ECMP)
+  hosts: spines:leaves
+  become: true
+  roles:
+    - frr_underlay

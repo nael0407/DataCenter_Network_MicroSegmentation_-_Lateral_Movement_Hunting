@@ -1,0 +1,71 @@
+all:
+  vars:
+    ansible_user: dcadmin
+    ansible_ssh_private_key_file: ~/.ssh/k8s-lab
+    ansible_ssh_common_args: '-o StrictHostKeyChecking=accept-new'
+  children:
+    spines:
+      hosts:
+        spine1:
+          ansible_host: 192.168.122.21
+          bgp_asn: 65000
+          router_id: 10.255.0.1
+          neighbors:
+            - ip: 10.254.0.1
+              asn: 65001
+              desc: leaf1
+            - ip: 10.254.0.3
+              asn: 65002
+              desc: leaf2
+            - ip: 10.254.0.5
+              asn: 65003
+              desc: leaf3
+        spine2:
+          ansible_host: 192.168.122.22
+          bgp_asn: 65000
+          router_id: 10.255.0.2
+          neighbors:
+            - ip: 10.254.0.7
+              asn: 65001
+              desc: leaf1
+            - ip: 10.254.0.9
+              asn: 65002
+              desc: leaf2
+            - ip: 10.254.0.11
+              asn: 65003
+              desc: leaf3
+    leaves:
+      hosts:
+        leaf1:
+          ansible_host: 192.168.122.31
+          bgp_asn: 65001
+          router_id: 10.255.0.11
+          neighbors:
+            - ip: 10.254.0.0
+              asn: 65000
+              desc: spine1
+            - ip: 10.254.0.6
+              asn: 65000
+              desc: spine2
+        leaf2:
+          ansible_host: 192.168.122.32
+          bgp_asn: 65002
+          router_id: 10.255.0.12
+          neighbors:
+            - ip: 10.254.0.2
+              asn: 65000
+              desc: spine1
+            - ip: 10.254.0.8
+              asn: 65000
+              desc: spine2
+        leaf3:
+          ansible_host: 192.168.122.33
+          bgp_asn: 65003
+          router_id: 10.255.0.13
+          neighbors:
+            - ip: 10.254.0.4
+              asn: 65000
+              desc: spine1
+            - ip: 10.254.0.10
+              asn: 65000
+              desc: spine2

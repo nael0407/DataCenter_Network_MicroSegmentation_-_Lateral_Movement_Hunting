@@ -1,0 +1,8 @@
+---
+- name: Reload sysctl
+  ansible.builtin.command: sysctl -p /etc/sysctl.d/99-ecmp.conf
+
+- name: Restart FRR
+  ansible.builtin.systemd:
+    name: frr
+    state: restarted
