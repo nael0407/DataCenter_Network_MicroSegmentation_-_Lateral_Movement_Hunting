@@ -397,3 +397,5 @@ Dirinci langkah demi langkah saat memasuki fase tersebut (satu komponen sekali),
 | **0.1** | 2026-10-15 | Selesai | Pengukuran host: RAM available 23 GiB (used 7.1 GiB), disk free 327 GB, VM proyek 3 (`k3s-server`, `k3s-agent1`, `k3s-agent2`) dalam status shut off, network `default` aktif. |
 | **0.2** | 2026-10-15 | Selesai | Pemeriksaan risiko Docker/bridge: `br_netfilter` tidak termuat, parameter `bridge-nf-call-iptables` belum aktif, rantai FORWARD bernilai ACCEPT. Risiko R1 saat ini aman (tidak perlu mitigasi). |
 | **0.3** | 2026-10-15 | Selesai | Konfirmasi D1-D5 & rencana alamat/ASN/VNI terkunci. Verifikasi rute host: tidak ada overlap dengan subnet lab (10.10.x, 10.254.x, 10.255.x, 203.0.113.x aman). |
+| **0.4** | 2026-10-15 | Selesai | Inisialisasi repo git `dc-microseg-lab`, kerangka direktori IaC lengkap, `.gitignore` ketat (anti kebocoran rahasia), dan commit awal (7c12e63). |
+| **0.5** | 2026-10-15 | Selesai | Dokumen komprehensif `docs/00-perencanaan-dan-anggaran.md` selesai ditulis (mencakup hasil ukur host, anggaran 14 VM, keputusan D1-D5, topologi libvirt, IP/ASN/VNI, prinsip bastion & telemetri). Fase 0 resmi tuntas. |
