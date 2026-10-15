@@ -13,6 +13,14 @@ credentials*
 # Konfigurasi OPNsense yang belum disanitasi                                                     
 *.orig.xml                                                                                       
 *unredacted*                                                                                     
+
+# Citra Disk & ISO Virtual Machine
+*.iso
+*.iso.bz2
+*.img
+*.img.bz2
+*.qcow2
+fabric/opnsense/iso/
                                                                                                     
 # Log & Artefak Pengujian Sementara                                                              
 *.log                                                                                            
