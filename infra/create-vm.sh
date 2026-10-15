@@ -62,7 +62,17 @@ if ! $VIRSH net-dumpxml default | grep -qi "mac=['\"]$MGMT_MAC['\"]"; then
 fi
 
 WORK="$(mktemp -d)"
-trap 'rm -rf "$WORK"' EXIT
+cleanup() {
+  local exit_code=$?
+  rm -rf "$WORK"
+  if [ $exit_code -ne 0 ]; then
+    if ! $VIRSH dominfo "$NAME" >/dev/null 2>&1; then
+      echo "[CLEANUP] Terjadi error. Membersihkan disk/seed yang belum terpasang untuk '$NAME'..."
+      sudo rm -f "$DISK" "$SEED" 2>/dev/null || true
+    fi
+  fi
+}
+trap cleanup EXIT
 
 # 4. Buat disk overlay qcow2 tipis di atas base image
 echo "[DISK] Membuat overlay qcow2 ${DISK_GB}G..."
@@ -92,7 +102,12 @@ VIRT_NET_ARGS=("--network" "network=default,model=virtio,mac=$MGMT_MAC")
 if [ -n "$ADDITIONAL_NICS" ]; then
   IFS=',' read -ra NIC_ARR <<< "$ADDITIONAL_NICS"
   for nic_item in "${NIC_ARR[@]}"; do
-    IFS=':' read -r net_name nic_mac if_name <<< "$nic_item"
+    # Ekstraksi string: net_name di awal, if_name di akhir, nic_mac di tengah (mengandung titik dua)
+    net_name="${nic_item%%:*}"
+    rest="${nic_item#*:}"
+    if_name="${rest##*:}"
+    nic_mac="${rest%:*}"
+
     cat >> "$WORK/network-config" <<EOF
   $if_name:
     match:
