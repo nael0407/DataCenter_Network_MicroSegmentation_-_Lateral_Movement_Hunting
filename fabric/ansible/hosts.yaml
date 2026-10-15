@@ -5,6 +5,8 @@ all:
     ansible_ssh_common_args: '-o StrictHostKeyChecking=accept-new'
   children:
     spines:
+      vars:
+        is_spine: true
       hosts:
         spine1:
           ansible_host: 192.168.122.21
@@ -35,11 +37,15 @@ all:
               asn: 65003
               desc: leaf3
     leaves:
+      vars:
+        is_spine: false
       hosts:
         leaf1:
           ansible_host: 192.168.122.31
           bgp_asn: 65001
           router_id: 10.255.0.11
+          vnis:
+            - 10010
           neighbors:
             - ip: 10.254.0.0
               asn: 65000
@@ -51,6 +57,8 @@ all:
           ansible_host: 192.168.122.32
           bgp_asn: 65002
           router_id: 10.255.0.12
+          vnis:
+            - 10020
           neighbors:
             - ip: 10.254.0.2
               asn: 65000
@@ -62,6 +70,12 @@ all:
           ansible_host: 192.168.122.33
           bgp_asn: 65003
           router_id: 10.255.0.13
+          vnis:
+            - 10010
+            - 10020
+            - 10030
+            - 10040
+            - 10050
           neighbors:
             - ip: 10.254.0.4
               asn: 65000

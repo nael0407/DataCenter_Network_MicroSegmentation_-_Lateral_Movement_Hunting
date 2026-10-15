@@ -21,6 +21,25 @@ router bgp {{ bgp_asn }}
 {% endfor %}
   maximum-paths 64
  exit-address-family
+ !
+ address-family l2vpn evpn
+{% if is_spine %}
+{% for neighbor in neighbors %}
+  neighbor {{ neighbor.ip }} activate
+  neighbor {{ neighbor.ip }} attribute-unchanged next-hop
+{% endfor %}
+{% else %}
+{% for neighbor in neighbors %}
+  neighbor {{ neighbor.ip }} activate
+{% endfor %}
+  advertise-all-vni
+{% for vni in vnis | default([]) %}
+  vni {{ vni }}
+   route-target both 65000:{{ vni }}
+  exit-vni
+{% endfor %}
+{% endif %}
+ exit-address-family
 !
 line vty
 !
