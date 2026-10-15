@@ -1,0 +1,30 @@
+# Kunci SSH, Sertifikat & Rahasia Kredensial                                                     
+*.pem                                                                                            
+*.key                                                                                            
+*.pub                                                                                            
+*.crt                                                                                            
+id_rsa*                                                                                          
+id_ed25519*                                                                                      
+*.vault_pass*                                                                                    
+*.secret*                                                                                        
+credentials*                                                                                     
+.env                                                                                             
+                                                                                                    
+# Konfigurasi OPNsense yang belum disanitasi                                                     
+*.orig.xml                                                                                       
+*unredacted*                                                                                     
+                                                                                                    
+# Log & Artefak Pengujian Sementara                                                              
+*.log                                                                                            
+*.pcap                                                                                           
+*.pcapng                                                                                         
+*.retry                                                                                          
+*.pyc                                                                                            
+__pycache__/                                                                                     
+                                                                                                    
+# OS & Editor                                                                                    
+.DS_Store                                                                                        
+.idea/                                                                                           
+.vscode/                                                                                         
+*.swp                                                                                            
+*~ 
