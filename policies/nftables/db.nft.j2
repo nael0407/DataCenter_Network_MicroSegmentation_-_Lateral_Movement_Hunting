@@ -1,0 +1,55 @@
+#!/usr/sbin/nft -f
+# policies/nftables/db.nft.j2
+# Host-based Micro-segmentation: Role Database PostgreSQL (db1)
+# Zona Database: 10.10.30.0/24
+
+flush ruleset
+
+table inet filter {
+    chain input {
+        type filter hook input priority filter; policy drop;
+
+        # 1. Antarmuka Loopback
+        iif "lo" accept
+
+        # 2. Connection Tracking
+        ct state established,related accept
+        ct state invalid drop
+
+        # 3. Diagnostik ICMP Ping
+        ip protocol icmp icmp type echo-request accept
+
+        # 4. Akses Administratif SSH: Hanya dari Bastion SecOps
+        ip saddr { 10.10.40.11, 192.168.122.81 } tcp dport 22 accept
+
+        # 5. Layanan Database: TCP Port 5432 hanya dari Zona App (10.10.20.0/24)
+        ip saddr 10.10.20.0/24 tcp dport 5432 accept
+
+        # 6. Default Deny Drop (Blokir akses langsung dari Web DMZ)
+        counter drop
+    }
+
+    chain output {
+        type filter hook output priority filter; policy drop;
+
+        # 1. Antarmuka Loopback
+        oif "lo" accept
+
+        # 2. Connection Tracking
+        ct state established,related accept
+        ct state invalid drop
+
+        # 3. Gateway Transit OPNsense (10.10.30.1): ICMP
+        ip daddr 10.10.30.1 icmp type echo-request accept
+
+        # 4. Telemetri Syslog ke SecOps (10.10.40.11:1514)
+        ip daddr 10.10.40.11 udp dport 1514 accept
+
+        # 5. ZERO-TRUST EGRESS: Blokir total seluruh koneksi keluar ke WAN maupun zona lain (Mitigasi S6 T1041/T1048)
+        counter drop
+    }
+
+    chain forward {
+        type filter hook forward priority filter; policy drop;
+    }
+}

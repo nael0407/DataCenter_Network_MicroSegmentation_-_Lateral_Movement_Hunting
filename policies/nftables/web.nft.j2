@@ -1,0 +1,60 @@
+#!/usr/sbin/nft -f
+# policies/nftables/web.nft.j2
+# Host-based Micro-segmentation: Role Web Frontend (web1, web2)
+# Zona Web DMZ: 10.10.10.0/24
+
+flush ruleset
+
+table inet filter {
+    chain input {
+        type filter hook input priority filter; policy drop;
+
+        # 1. Antarmuka Loopback
+        iif "lo" accept
+
+        # 2. Connection Tracking
+        ct state established,related accept
+        ct state invalid drop
+
+        # 3. Diagnostik ICMP Ping
+        ip protocol icmp icmp type echo-request accept
+
+        # 4. Akses Administratif SSH: Hanya dari Bastion SecOps
+        ip saddr { 10.10.40.11, 192.168.122.81 } tcp dport 22 accept
+
+        # 5. Layanan Publik Web: HTTP Port 80
+        tcp dport 80 accept
+
+        # 6. Default Deny Drop
+        counter drop
+    }
+
+    chain output {
+        type filter hook output priority filter; policy drop;
+
+        # 1. Antarmuka Loopback
+        oif "lo" accept
+
+        # 2. Connection Tracking
+        ct state established,related accept
+        ct state invalid drop
+
+        # 3. Gateway Transit OPNsense (10.10.10.1): ICMP & DNS
+        ip daddr 10.10.10.1 icmp type echo-request accept
+        ip daddr 10.10.10.1 udp dport 53 accept
+        ip daddr 10.10.10.1 tcp dport 53 accept
+
+        # 4. Telemetri Syslog ke SecOps (10.10.40.11:1514)
+        ip daddr 10.10.40.11 udp dport 1514 accept
+
+        # 5. Panggilan API ke App Tier Backend (10.10.20.0/24:8080)
+        ip daddr 10.10.20.0/24 tcp dport 8080 accept
+
+        # 6. Blokir total koneksi keluar lainnya (Termasuk pencegahan SSH Lateral T1021.004)
+        counter drop
+    }
+
+    chain forward {
+        type filter hook forward priority filter; policy drop;
+    }
+}

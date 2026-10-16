@@ -83,3 +83,39 @@ all:
             - ip: 10.254.0.10
               asn: 65000
               desc: spine2
+    workloads:
+      vars:
+        ansible_ssh_common_args: '-o StrictHostKeyChecking=accept-new -o ProxyJump=dcadmin@192.168.122.81'
+      children:
+        web_servers:
+          vars:
+            workload_role: web
+            service_port: 80
+          hosts:
+            web1:
+              ansible_host: 10.10.10.11
+            web2:
+              ansible_host: 10.10.10.12
+        app_servers:
+          vars:
+            workload_role: app
+            service_port: 8080
+          hosts:
+            app1:
+              ansible_host: 10.10.20.11
+            app2:
+              ansible_host: 10.10.20.12
+        db_servers:
+          vars:
+            workload_role: db
+            service_port: 5432
+          hosts:
+            db1:
+              ansible_host: 10.10.30.11
+        canary_servers:
+          vars:
+            workload_role: canary
+          hosts:
+            canary1:
+              ansible_host: 10.10.50.11
+

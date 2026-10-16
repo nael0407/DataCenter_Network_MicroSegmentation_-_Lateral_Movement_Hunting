@@ -1,0 +1,55 @@
+---
+# fabric/ansible/playbook-nftables.yaml
+# Otomasi Penerapan Host-based Micro-segmentation (nftables) pada Workload VMs
+# Menggunakan Jinja2 Role-based Templates & Verifikasi Sintaks Sebelum Penerapan
+- name: Terapkan Host-based Micro-segmentation (nftables) pada Workload Servers
+  hosts: workloads
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: 1. Pastikan paket nftables terpasang
+      ansible.builtin.apt:
+        name: nftables
+        state: present
+        update_cache: false
+
+    - name: 2. Render templat konfigurasi nftables sesuai peran host ke berkas uji sementara
+      ansible.builtin.template:
+        src: "../../policies/nftables/{{ workload_role }}.nft.j2"
+        dest: /tmp/nftables_test.conf
+        owner: root
+        group: root
+        mode: '0600'
+
+    - name: 3. Verifikasi validitas sintaks nftables (nft -c) sebelum diterapkan
+      ansible.builtin.command:
+        cmd: nft -c -f /tmp/nftables_test.conf
+      changed_when: false
+
+    - name: 4. Salin konfigurasi yang telah teruji ke /etc/nftables.conf
+      ansible.builtin.copy:
+        src: /tmp/nftables_test.conf
+        dest: /etc/nftables.conf
+        remote_src: true
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Reload nftables service
+
+    - name: 5. Hapus berkas konfigurasi uji sementara
+      ansible.builtin.file:
+        path: /tmp/nftables_test.conf
+        state: absent
+
+    - name: 6. Pastikan nftables.service aktif dan otomatis berjalan saat boot
+      ansible.builtin.systemd:
+        name: nftables
+        state: started
+        enabled: true
+
+  handlers:
+    - name: Reload nftables service
+      ansible.builtin.systemd:
+        name: nftables
+        state: reloaded
