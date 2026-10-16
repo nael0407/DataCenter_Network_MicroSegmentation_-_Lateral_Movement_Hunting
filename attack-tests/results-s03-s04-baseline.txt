@@ -1,0 +1,26 @@
+==========================================================
+Hasil Pengujian Skenario S3 & S4 (Baseline Permisif)
+Tanggal   : 2026-10-16 19:21:29
+Kondisi   : Permisif (Pre-Hardening)
+Sumber    : web1 (10.10.10.11)
+==========================================================
+
+1. HASIL SKENARIO S3 (SSH AGENT HIJACKING - T1563.001):
+- Status        : BERHASIL (Eksploitasi Sukses)
+- Bukti Autentikasi: app1 dcadmin 
+- Analisis      : Penyerang di web1 yang mendeteksi socket SSH_AUTH_SOCK dapat
+                  menggunakannya untuk melompat ke app1 tanpa memerlukan kunci
+                  privat di disk.
+- Target Hardening (Fase 7):
+  * Terapkan 'AllowAgentForwarding no' pada sshd di seluruh server.
+  * Terapkan isolasi segmentasi zona sehingga web1 tidak diizinkan membuka koneksi SSH lateral.
+
+2. HASIL SKENARIO S4 (PROTOCOL TUNNELING - T1572 / PROXY - T1090):
+- Status        : BERHASIL (Tunneling Sukses)
+- Payload DB    : {"status": "ok", "tier": "database", "service": "postgres-mock", "node": "db1", "query_received": "SELECT * FROM core_accounts WHERE status='active';", "records_returned": 42, "latency_ms": 1.25, "timestamp": 1792153289.4641292}
+- Analisis      : Penyerang di Web DMZ berhasil membuat port-forwarding tunnel lokal
+                  (127.0.0.1:15432 -> app1 -> db1:5432), menyamarkan lalu lintas database
+                  di dalam protokol SSH port 22 terenkripsi.
+- Target Hardening (Fase 7):
+  * Terapkan 'AllowTcpForwarding no' pada sshd node beban kerja.
+  * Blokir koneksi SSH antar zona Web dan App secara default di OPNsense & nftables.
