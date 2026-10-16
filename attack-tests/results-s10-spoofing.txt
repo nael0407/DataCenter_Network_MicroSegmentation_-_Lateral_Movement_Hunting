@@ -1,0 +1,40 @@
+==========================================================
+Hasil Pengujian Skenario S10: Pencegahan IP Spoofing Lintas-Zona
+Tanggal   : 2026-10-16 21:12:36
+Sumber    : web1 (10.10.10.11 - Web DMZ VLAN 10)
+Target    : db1:5432, app1:22, app1:8080
+==========================================================
+
+1. UJI 1 (SPOOFING IP APP 10.10.20.11 KE DATABASE db1:5432):
+- Status        : BLOCKED (Ditolak Seketika di Layer Host)
+- Mekanisme     : Netfilter / nftables output chain policy
+- Respons Kernel: Operation not permitted (EPERM)
+- Analisis      : Penyerang di web1 yang memalsukan IP sumber menjadi 10.10.20.11
+                  tetap tidak dapat mengirim paket ke port 5432 karena rantai output
+                  nftables lokal memblokir inisiasi paket keluar ke port database.
+
+2. UJI 2 (SPOOFING IP SECOPS 10.10.40.11 KE SSH app1:22):
+- Status        : BLOCKED (Ditolak Seketika di Layer Host)
+- Mekanisme     : Netfilter / nftables output chain policy
+- Respons Kernel: Operation not permitted (EPERM)
+- Analisis      : Penyerang yang memalsukan IP sumber menjadi SecOps Bastion tetap
+                  tidak dapat membuka sesi SSH karena nftables output mendrop port 22.
+
+3. UJI 3 (SPOOFING IP SECOPS 10.10.40.11 KE APP API app1:8080):
+- Status Transmisi: Terkirim dari host (port 8080 diizinkan di output web1)
+- Status Firewall : BLOCKED & LOGGED (OPNsense SPI Gateway)
+- Log Filterlog   : vlan01,match,block,in,4,...10.10.40.11,10.10.20.11,54323,8080,0,S
+- Analisis        :
+  * Paket spoofing tiba di antarmuka OPNsense vlan01 (Web DMZ, subnet 10.10.10.0/24).
+  * OPNsense menerapkan pencocokan subnet antarmuka ingress secara ketat. Paket dengan
+    IP sumber 10.10.40.11 (SecOps) tidak cocok dengan aturan izin 'vlan01 net'.
+  * Paket seketika dijatuhkan oleh aturan Default Deny Ingress dan dicatat ke filterlog.
+  * Perlindungan Tambahan (TCP State Invariant): Meskipun secara hipotesis paket lolos,
+    paket balasan SYN-ACK akan dialihkan ke IP asli (VLAN 40), sehingga handshake
+    koneksi TCP tidak akan pernah dapat terbentuk dari web1.
+
+KESIMPULAN PERTAHANAN ANTI-SPOOFING (S10):
+- Pertahanan Berlapis (Defense-in-Depth) terbukti 100% efektif menggagalkan serangan IP spoofing:
+  * Lapisan Host (nftables): Menggagalkan transmisi ke port yang tidak terdaftar.
+  * Lapisan Firewall (OPNsense): Menggagalkan dan mencatat paket dengan IP sumber asing pada antarmuka VLAN.
+  * Lapisan State (TCP SPI): Menjamin integritas sesi dua arah.
