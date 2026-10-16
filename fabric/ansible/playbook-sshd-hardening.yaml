@@ -1,0 +1,29 @@
+---
+# fabric/ansible/playbook-sshd-hardening.yaml
+# Otomasi Pengerasan Konfigurasi SSH Daemon (sshd) pada Workload Servers
+# Menegakkan AllowAgentForwarding no dan AllowTcpForwarding no
+- name: Terapkan Pengerasan Konfigurasi SSH Daemon pada Workload Servers
+  hosts: workloads
+  become: true
+  gather_facts: false
+
+  tasks:
+    - name: 1. Pasang berkas konfigurasi pengerasan sshd
+      ansible.builtin.copy:
+        src: ../../policies/ssh/99-hardened-sshd.conf
+        dest: /etc/ssh/sshd_config.d/99-hardened-sshd.conf
+        owner: root
+        group: root
+        mode: '0644'
+      notify: Reload ssh service
+
+    - name: 2. Verifikasi validitas sintaks sshd (sshd -t) sebelum reload
+      ansible.builtin.command:
+        cmd: sshd -t
+      changed_when: false
+
+  handlers:
+    - name: Reload ssh service
+      ansible.builtin.systemd:
+        name: ssh
+        state: reloaded
