@@ -10,8 +10,9 @@ id_ed25519*
 credentials*                                                                                     
 .env                                                                                             
                                                                                                     
-# Konfigurasi OPNsense yang belum disanitasi                                                     
-*.orig.xml                                                                                       
+# Konfigurasi OPNsense yang belum disanitasi
+*.orig.xml
+*.hardened.xml
 *unredacted*                                                                                     
 
 # Citra Disk & ISO Virtual Machine
