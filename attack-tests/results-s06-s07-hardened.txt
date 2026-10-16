@@ -1,0 +1,28 @@
+==========================================================
+Hasil Pengujian Skenario S6 & S7 (Hardened / Post-Hardening)
+Tanggal   : 2026-10-16 20:48:31
+Kondisi   : Post-Hardening (Zero-Trust Egress & Perimeter Enforced)
+==========================================================
+
+1. HASIL SKENARIO S6 (DATABASE EGRESS EXFILTRATION - T1041 / T1048):
+- Status Eksfiltrasi HTTP : EXFIL_BLOCKED
+- Status Eksfiltrasi ICMP : ICMP_BLOCKED
+- Data Diterima Penyerang : NO_DATA (0 Bytes / 0 Records)
+- Analisis               :
+  * Pada kondisi baseline, data sensitif nasabah (42 record) berhasil dieksfiltrasi
+    secara bebas ke C2 listener eksternal penyerang.
+  * Pada kondisi hardened, kebijakan Zero-Trust Egress ditegakkan di host nftables
+    (drop output selain transit lokal & syslog) dan OPNsense firewall (Default Deny).
+  * Upaya eksfiltrasi data berhasil digagalkan 100%.
+
+2. HASIL SKENARIO S7 (EXTERNAL PERIMETER DEFENSE NORTH-SOUTH):
+- WEB_PUBLICATION: PASS (HTTP 200 OK via OPNsense NAT)
+- DIRECT_INTERNAL_DB: BLOCKED (Perimeter Drop)
+- DIRECT_INTERNAL_APP: BLOCKED (Perimeter Drop)
+- WAN_PORT_5432: BLOCKED (Firewall Default Drop)
+- WAN_PORT_22: BLOCKED (Firewall Default Drop)
+
+PERBANDINGAN BASELINE VS HARDENED:
+- Eksfiltrasi DB S6 : Baseline BERHASIL (42 record bocor) -> Hardened DIBLOKIR TOTAL (0 data bocor).
+- Publikasi Web     : Tetap BERFUNGSI SEMPURNA (200 OK melintasi cascading data-plane 3-tier).
+- Isolasi Perimeter : 100% BLOCKED terhadap seluruh upaya bypass ke internal tiers.

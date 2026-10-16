@@ -1,0 +1,27 @@
+==========================================================
+Hasil Pengujian Skenario S1 (Hardened / Post-Hardening)
+Tanggal   : 2026-10-16 20:47:43
+Sumber    : web1 (10.10.10.11)
+Port Uji  : 21,22,23,80,443,1433,2222,3306,5432,6379,8080,8443
+Durasi    : 17.586016820s
+==========================================================
+
+RINGKASAN PORT TERBUKA YANG DITEMUKAN PENYERANG (POST-HARDENING):
+Nmap scan report for 10.10.20.11
+PORT     STATE SERVICE
+8080/tcp open  http-proxy
+Nmap scan report for 10.10.20.12
+PORT     STATE SERVICE
+8080/tcp open  http-proxy
+
+ANALISIS KONDISI PENGUATAN (POST-HARDENING):
+- Jumlah layanan terbuka yang dapat dijangkau dari Web DMZ: 2 port (hanya 8080/tcp pada app1 dan app2).
+- Perbandingan dengan Kondisi Baseline:
+  * Baseline (Pre-Hardening) : 14 layanan terbuka (App: 22,8080; DB: 22,5432; Canary: 21,22,23,80,2222,3306,6379,8080).
+  * Hardened (Post-Hardening): 2 layanan terbuka (hanya App: 8080).
+- Reduksi Keterjangkauan Layanan : 85.71% penurunan paparan layanan.
+- Blast Radius Terhadap Tier Sensitif:
+  * Database Tier (db1 :5432, :22) -> DIBLOKIR TOTAL (0 port terbuka / 0% eksposur).
+  * Decoy Tier (canary1)          -> DIBLOKIR TOTAL (0 port terbuka / 0% eksposur).
+  * Management SSH (:22)          -> DIBLOKIR TOTAL (0 port terbuka / 0% eksposur).
+- Prinsip Least Privilege: Web DMZ kini HANYA dapat berkomunikasi dengan port API resmi App Tier (8080).

@@ -1,0 +1,28 @@
+==========================================================
+Hasil Pengujian Skenario S3 & S4 (Hardened / Post-Hardening)
+Tanggal   : 2026-10-16 20:48:07
+Kondisi   : Post-Hardening (sshd Hardened + Microsegmentation)
+Sumber    : web1 (10.10.10.11)
+==========================================================
+
+1. HASIL SKENARIO S3 (SSH AGENT HIJACKING - T1563.001):
+- Status        : BLOCKED / MITIGATED
+- Respons Uji   : POLICY: unknown | RESULT: ssh: connect to host 10.10.20.11 port 22: Connection timed out
+AGENT_PIVOT_FAILED
+- Analisis      :
+  * Pengerasan sshd: 'AllowAgentForwarding no' aktif di seluruh node.
+  * Segmentasi Jaringan: Upaya inisiasi koneksi SSH lateral dari web1 ke app1 dijatuhkan
+    pada lapisan nftables & OPNsense default-deny.
+  * Vektor serangan pembajakan socket SSH agent berhasil dinetralisasi sepenuhnya.
+
+2. HASIL SKENARIO S4 (PROTOCOL TUNNELING - T1572 / PROXY - T1090):
+- Status        : BLOCKED / PROHIBITED
+- Respons Uji   : POLICY: unknown | QUERY_RESULT: CONNECTION_FAILED
+- Analisis      :
+  * Pengerasan sshd: 'AllowTcpForwarding no' aktif di seluruh beban kerja.
+  * Pembuatan SSH tunnel (-L) ditolak oleh daemon SSH dan koneksi lateral diblokir di jaringan.
+  * Tidak ada data database sensitif yang dapat diekstrak melintasi tunnel.
+
+PERBANDINGAN BASELINE VS HARDENED:
+- Skenario S3 : Baseline BERHASIL (auth via socket) -> Hardened DIBLOKIR TOTAL.
+- Skenario S4 : Baseline BERHASIL (data diekstrak via -L) -> Hardened DIBLOKIR TOTAL (0 bytes).

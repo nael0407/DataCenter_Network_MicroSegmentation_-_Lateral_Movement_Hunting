@@ -1,0 +1,20 @@
+==========================================================
+Hasil Pengujian Skenario S2: Lateral Movement Berantai (Hardened)
+Tanggal : 2026-10-16 20:47:58
+Kondisi : Post-Hardening (Microsegmentation Enforced)
+Target  : Port 22 SSH (Mitigasi MITRE ATT&CK T1021.004 / T1078)
+==========================================================
+
+STATUS LOMPATAN LATERAL PASCA-PENGUATAN:
+1. Hop 1 (web1 -> app1:22)       : BLOCKED (Drop)
+2. Hop 2 (app1 -> db1:22)        : BLOCKED (Drop)
+3. Direct Jump (web1 -> db1:22)  : BLOCKED (Drop)
+
+PERBANDINGAN HASIL BASELINE VS HARDENED:
+- Baseline (Pre-Hardening) : Ketiga lompatan (Hop 1, Hop 2, Direct Jump) BERHASIL 100%.
+                             Penyerang bebas bergerak lateral dari Web DMZ hingga Database.
+- Hardened (Post-Hardening): Ketiga lompatan lateral DIBLOKIR 100% (Drop).
+- Mekanisme Pertahanan Berlapis (Defense-in-Depth):
+  * Lapisan 1 (Host nftables): Rantai output web1/app1 mendrop inisiasi paket TCP port 22 ke host lain.
+  * Lapisan 2 (Firewall OPNsense): Aturan default-deny inter-zona mendrop dan mencatat paket ke filterlog.
+  * Lapisan 3 (SSH Daemon): Akses SSH dibatasi hanya dapat diinisiasi dari SecOps Bastion (10.10.40.11).

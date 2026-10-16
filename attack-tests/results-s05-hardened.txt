@@ -1,0 +1,20 @@
+==========================================================
+Hasil Pengujian Skenario S5 (Hardened / Post-Hardening)
+Tanggal   : 2026-10-16 20:48:12
+Kondisi   : Post-Hardening (Microsegmentation Enforced)
+Honeypot  : canary1 (10.10.50.11)
+==========================================================
+
+1. HASIL PENGUJIAN PROBE DARI WEB DMZ:
+- Status        : PROBE_DROPPED (Terisolasi Total)
+- Analisis      :
+  * Pada kondisi baseline, web1 dapat memindai dan menyentuh seluruh 8 port decoy canary1.
+  * Pada kondisi hardened, probe lateral dari web1 dijatuhkan di layer host nftables dan
+    OPNsense firewall (Default Deny).
+  * Penyerang di Web DMZ tidak dapat lagi mendeteksi atau menjangkau zona decoy.
+
+2. KESEHATAN SENSOR DECOY & DETEKSI:
+- Status Layanan: ACTIVE
+- Format Log    : JSON valid via /var/log/opencanary/opencanary.json
+- Jalur Syslog  : Terhubung ke Loki SecOps (10.10.40.11:1514)
+- Karakteristik : Honeypot siap siaga menjaring setiap intrusi lateral yang menyimpang ke VLAN 50.
