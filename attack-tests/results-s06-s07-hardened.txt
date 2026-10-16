@@ -1,6 +1,6 @@
 ==========================================================
 Hasil Pengujian Skenario S6 & S7 (Hardened / Post-Hardening)
-Tanggal   : 2026-10-16 20:48:31
+Tanggal   : 2026-10-16 21:38:21
 Kondisi   : Post-Hardening (Zero-Trust Egress & Perimeter Enforced)
 ==========================================================
 

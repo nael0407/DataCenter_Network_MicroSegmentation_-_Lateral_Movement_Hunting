@@ -1,6 +1,6 @@
 ==========================================================
 Hasil Pengujian Skenario S10: Pencegahan IP Spoofing Lintas-Zona
-Tanggal   : 2026-10-16 21:12:36
+Tanggal   : 2026-10-16 21:39:27
 Sumber    : web1 (10.10.10.11 - Web DMZ VLAN 10)
 Target    : db1:5432, app1:22, app1:8080
 ==========================================================

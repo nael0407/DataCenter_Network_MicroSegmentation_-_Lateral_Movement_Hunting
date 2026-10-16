@@ -34,14 +34,17 @@ def make_web_request(url, timeout=5.0):
 def main():
     parser = argparse.ArgumentParser(description="3-Tier Workload Traffic Generator with Jitter")
     parser.add_argument("--count", type=int, default=0, help="Jumlah request (0 = berjalan terus menerus)")
+    parser.add_argument("--targets", type=str, default="", help="Daftar URL target dipisahkan koma (default: web1, web2)")
     parser.add_argument("--min-interval", type=float, default=1.0, help="Interval minimum antar request dalam detik")
     parser.add_argument("--max-interval", type=float, default=3.5, help="Interval maksimum antar request dalam detik")
     parser.add_argument("--admin-interval", type=float, default=30.0, help="Interval aktivitas admin SSH berkala dalam detik")
     args = parser.parse_args()
 
+    targets = [t.strip() for t in args.targets.split(",") if t.strip()] if args.targets else WEB_TARGETS
+
     print("==========================================================")
     print("3-Tier Workload Baseline Traffic Generator (Fase 5)")
-    print(f"Target Web Tier : {', '.join(WEB_TARGETS)}")
+    print(f"Target Web Tier : {', '.join(targets)}")
     print(f"Random Jitter   : {args.min_interval}s s/d {args.max_interval}s")
     print(f"Aktivitas Admin : Setiap ~{args.admin_interval}s")
     print("Tekan Ctrl+C untuk menghentikan generator.")
@@ -56,7 +59,7 @@ def main():
     try:
         while True:
             req_num += 1
-            url = random.choice(WEB_TARGETS)
+            url = random.choice(targets)
             ok, status, latency_ms, data = make_web_request(url)
 
             now_str = time.strftime('%Y-%m-%d %H:%M:%S')

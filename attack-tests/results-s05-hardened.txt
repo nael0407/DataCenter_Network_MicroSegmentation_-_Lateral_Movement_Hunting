@@ -1,6 +1,6 @@
 ==========================================================
 Hasil Pengujian Skenario S5 (Hardened / Post-Hardening)
-Tanggal   : 2026-10-16 20:48:12
+Tanggal   : 2026-10-16 21:38:02
 Kondisi   : Post-Hardening (Microsegmentation Enforced)
 Honeypot  : canary1 (10.10.50.11)
 ==========================================================

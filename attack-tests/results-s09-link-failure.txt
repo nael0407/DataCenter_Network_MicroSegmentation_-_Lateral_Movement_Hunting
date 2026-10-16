@@ -1,12 +1,12 @@
 ==========================================================
 Hasil Pengujian Skenario S9: Ketahanan Link Fabric & Konvergensi
-Tanggal   : 2026-10-16 21:05:36
+Tanggal   : 2026-10-16 21:38:46
 Target    : Link leaf1 (eth1) <-> spine1 (eth1)
 Metode    : virsh domif-setlink leaf1 52:54:00:04:11:11 down/up
 ==========================================================
 
 1. PENGUKURAN WAKTU KONVERGENSI FAILOVER (LINK DOWN):
-- Waktu Injeksi              : 2026-10-16 21:05:16.021
+- Waktu Injeksi              : 2026-10-16 21:38:26.970
 - Transmitted Probe (0.1s)   : 40 paket
 - Received Probe             : 40 paket
 - Dropped Probe              : 0 paket
@@ -16,7 +16,7 @@ Metode    : virsh domif-setlink leaf1 52:54:00:04:11:11 down/up
                                mengalihkan 100% nexthop ke Spine2 (eth2) secara otomatis.
 
 2. PENGUKURAN PEMULIHAN LINK (LINK RECOVERY / UP):
-- Waktu Restorasi            : 2026-10-16 21:05:28.910
+- Waktu Restorasi            : 2026-10-16 21:38:38.053
 - Packet Loss saat Recovery  : 0%packetloss (Lossless Failback)
 - Status BFD Pasca-Restorasi : Both Peers UP (Spine1 & Spine2)
 - Status FIB Pasca-Restorasi : 2-Path ECMP Multipath Aktif Kembali

@@ -1,6 +1,6 @@
 ==========================================================
 Hasil Pengujian Skenario S2: Lateral Movement Berantai (Hardened)
-Tanggal : 2026-10-16 20:47:58
+Tanggal : 2026-10-16 21:37:47
 Kondisi : Post-Hardening (Microsegmentation Enforced)
 Target  : Port 22 SSH (Mitigasi MITRE ATT&CK T1021.004 / T1078)
 ==========================================================

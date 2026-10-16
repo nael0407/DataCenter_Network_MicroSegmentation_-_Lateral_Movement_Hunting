@@ -1,6 +1,6 @@
 ==========================================================
 Hasil Pengujian Skenario S3 & S4 (Hardened / Post-Hardening)
-Tanggal   : 2026-10-16 20:48:07
+Tanggal   : 2026-10-16 21:37:57
 Kondisi   : Post-Hardening (sshd Hardened + Microsegmentation)
 Sumber    : web1 (10.10.10.11)
 ==========================================================

@@ -1,9 +1,9 @@
 ==========================================================
 Hasil Pengujian Skenario S1 (Hardened / Post-Hardening)
-Tanggal   : 2026-10-16 20:47:43
+Tanggal   : 2026-10-16 21:37:33
 Sumber    : web1 (10.10.10.11)
 Port Uji  : 21,22,23,80,443,1433,2222,3306,5432,6379,8080,8443
-Durasi    : 17.586016820s
+Durasi    : 15.859368950s
 ==========================================================
 
 RINGKASAN PORT TERBUKA YANG DITEMUKAN PENYERANG (POST-HARDENING):

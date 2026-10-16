@@ -26,8 +26,8 @@ for node in "db1:10.10.30.11:mock-db" "app1:10.10.20.11:mock-app" "app2:10.10.20
 done
 
 echo
-echo "--- 2. Menguji Panggilan Cascading East-West Internal (SecOps -> Web1 & Web2) ---"
-resp1=$(ssh $SSH_OPTS dcadmin@192.168.122.81 "curl -s --connect-timeout 3 http://10.10.10.11/")
+echo "--- 2. Menguji Panggilan Cascading East-West Internal (Web1/Web2 -> App -> DB) ---"
+resp1=$(ssh $SSH_OPTS dcadmin@10.10.10.11 "curl -s --connect-timeout 3 http://127.0.0.1/")
 if echo "$resp1" | grep -q '"status": "ok"'; then
     echo "  [OK] Respons 200 OK dari web1:"
     echo "$resp1" | grep -E '"node"|"target"|"database_backend"|"records_returned"' | sed 's/^/    /'
@@ -37,7 +37,7 @@ else
     exit 1
 fi
 
-resp2=$(ssh $SSH_OPTS dcadmin@192.168.122.81 "curl -s --connect-timeout 3 http://10.10.10.12/")
+resp2=$(ssh $SSH_OPTS dcadmin@10.10.10.12 "curl -s --connect-timeout 3 http://127.0.0.1/")
 if echo "$resp2" | grep -q '"status": "ok"'; then
     echo "  [OK] Respons 200 OK dari web2:"
     echo "$resp2" | grep -E '"node"|"target"|"database_backend"|"records_returned"' | sed 's/^/    /'
@@ -60,9 +60,9 @@ else
 fi
 
 echo
-echo "--- 4. Menjalankan Siklus Generator Trafik Normal dengan Random Jitter di SecOps ---"
-scp $SSH_OPTS "$SCRIPT_DIR/traffic-generator.py" dcadmin@192.168.122.81:/tmp/traffic-generator.py
-ssh $SSH_OPTS dcadmin@192.168.122.81 "python3 /tmp/traffic-generator.py --count 5 --min-interval 0.5 --max-interval 1.5 --admin-interval 5.0"
+echo "--- 4. Menjalankan Siklus Generator Trafik Normal dengan Random Jitter dari Attacker (WAN NAT) ---"
+scp $SSH_OPTS "$SCRIPT_DIR/traffic-generator.py" dcadmin@203.0.113.11:/tmp/traffic-generator.py
+ssh $SSH_OPTS dcadmin@203.0.113.11 "python3 /tmp/traffic-generator.py --targets http://203.0.113.1/ --count 5 --min-interval 0.5 --max-interval 1.5 --admin-interval 5.0"
 
 echo
 echo "=========================================================="

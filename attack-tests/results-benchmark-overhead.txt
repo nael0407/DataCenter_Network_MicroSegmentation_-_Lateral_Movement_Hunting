@@ -1,6 +1,6 @@
 ==========================================================
 Hasil Pengujian Langkah 8.4: Throughput & Latency Overhead
-Tanggal Pengujian : 2026-10-16 21:26:25
+Tanggal Pengujian : 2026-10-16 21:39:45
 Klien Benchmark   : web1 (10.10.10.11 / Web DMZ)
 Metode Pengukuran : iperf3 TCP Stream (5 Detik, JSON Metrics)
 ==========================================================
@@ -8,28 +8,28 @@ Metode Pengukuran : iperf3 TCP Stream (5 Detik, JSON Metrics)
 1. PENGUKURAN INTRA-ZONE L2 (TANPA FIREWALL / DIRECT EVPN OVERLAY):
 - Jalur Komunikasi   : web1 (10.10.10.11) <-> web2 (10.10.10.12)
 - Mekanisme Data     : Pure Layer-2 EVPN Bridged Overlay (VNI 10010)
-- Throughput Rata2   : 81.85 Gbits/sec
+- Throughput Rata2   : 83.29 Gbits/sec
 - Retransmisi Paket  : 0 paket
-- Mean RTT (Latensi) : 0.135 ms
+- Mean RTT (Latensi) : 0.142 ms
 - Karakteristik      : Switching lokal berkecepatan memori kernel tinggi
                        tanpa melewati pemrosesan firewall gateway.
 
 2. PENGUKURAN INTER-ZONE L3 (MELINTASI OPNSENSE STATEFUL SPI FIREWALL):
 - Jalur Komunikasi   : web1 (10.10.10.11) -> OPNsense SPI -> app2 (10.10.20.12:8080)
 - Mekanisme Data     : Multi-hop Spine-Leaf EVPN + Trunk 802.1Q + OPNsense pf SPI
-- Throughput Rata2   : 2.91 Gbits/sec
-- Retransmisi Paket  : 720 paket
-- Mean RTT (Latensi) : 4.815 ms
+- Throughput Rata2   : 2.51 Gbits/sec
+- Retransmisi Paket  : 1147 paket
+- Mean RTT (Latensi) : 4.770 ms
 - Karakteristik      : Melintasi pemeriksaan paket stateful penuh (Packet Filter)
                        pada kernel FreeBSD OPNsense dan penegakan micro-segmentation.
 
 3. KALKULASI SECURITY OVERHEAD & PERFORMANCE TRADE-OFF:
-- Throughput Inter-Zone  : 2.91 Gbps (Sangat stabil di tingkat multi-gigabit)
-- Biaya Latensi Stateful : +4.680 ms
+- Throughput Inter-Zone  : 2.51 Gbps (Sangat stabil di tingkat multi-gigabit)
+- Biaya Latensi Stateful : +4.628 ms
 - Integritas Transmisi   : Retransmisi minimal, nol packet loss, koneksi stabil.
 
 KESIMPULAN EVALUASI PERFORMA:
 - Arsitektur Micro-segmentation berbasis OPNsense mampu mempertahankan throughput
   antar-zona di kisaran multi-gigabit (> 2.5 Gbps pada vCPU virtual) dengan zero packet loss.
-- Penambahan latensi (~4.68 ms) merupakan biaya wajar (*security overhead*)
+- Penambahan latensi (~4.63 ms) merupakan biaya wajar (*security overhead*)
   untuk mendapatkan inspeksi stateful penuh, pencegahan lateral movement, dan penegakan Zero-Trust.

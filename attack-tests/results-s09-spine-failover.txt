@@ -1,16 +1,16 @@
 ==========================================================
 Hasil Pengujian Skenario S9 (Bagian 2): Kegagalan Node Spine
-Tanggal   : 2026-10-16 21:09:16
+Tanggal   : 2026-10-16 21:39:22
 Target    : spine1 (192.168.122.21 / AS 65000)
 Metode    : virsh destroy spine1 -> virsh start spine1
 ==========================================================
 
 1. PENGUKURAN WAKTU KONVERGENSI FAILOVER (SPINE1 DOWN):
-- Waktu Crash                : 2026-10-16 21:08:39.970
+- Waktu Crash                : 2026-10-16 21:38:49.005
 - Transmitted Probe (0.1s)   : 50 paket
-- Received Probe             : 50 paket
-- Dropped Probe              : 0 paket
-- Estimasi Waktu Konvergensi : 0 milidetik (< 1 detik / Sub-Second)
+- Received Probe             : 41 paket
+- Dropped Probe              : 9 paket
+- Estimasi Waktu Konvergensi : 900 milidetik (< 1 detik / Sub-Second)
 - Reaksi BFD di Seluruh Leaf : Ketiga leaf (leaf1, leaf2, leaf3) serentak
                                mendeteksi Spine1 DOWN dan mengalihkan 100%
                                lalu lintas overlay ke Spine2.
@@ -27,6 +27,6 @@ Metode    : virsh destroy spine1 -> virsh start spine1
 - Zero-Trust Egress DB -> WAN        : BLOCKED (Tetap Diblokir Total)
 
 4. PEMULIHAN NODE SPINE1 (RECOVERY):
-- Waktu Restorasi                     : 2026-10-16 21:08:57.332
+- Waktu Restorasi                     : 2026-10-16 21:39:04.204
 - Status BFD Pasca-Booting            : 6/6 Sesi BFD UP di seluruh Leaf (leaf1-3)
 - Status Fabric                       : Dual-Spine Redundancy Aktif Kembali Penuh
