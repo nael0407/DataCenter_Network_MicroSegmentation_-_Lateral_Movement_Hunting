@@ -30,6 +30,18 @@ echo "Menunggu stabilisasi inisialisasi jaringan (8 detik)..."
 sleep 8
 
 echo
+echo "--- Memverifikasi & Menyinkronkan Dataplane Fabric (Leaf1-3 & Spine1-2) ---"
+SSH_KEY="$HOME/.ssh/k8s-lab"
+SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=3"
+
+# Sinkronisasi jembatan data-plane di ketiga switch Leaf
+for leaf_ip in "192.168.122.31" "192.168.122.32" "192.168.122.33"; do
+  if ssh $SSH_OPTS "dcadmin@$leaf_ip" "sudo /usr/local/bin/setup-overlay-dataplane.sh" >/dev/null 2>&1; then
+    echo "[OK] Dataplane overlay tersinkronisasi di $leaf_ip"
+  fi
+done
+
+echo
 echo "=========================================================="
 echo "Status Seluruh VM Lab Saat Ini:"
 $VIRSH list --all | grep -E "(spine|leaf|opnsense|web|app|db|canary|secops|attacker)" || true

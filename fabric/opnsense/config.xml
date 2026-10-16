@@ -636,8 +636,8 @@
   </widgets>
   <revision>
     <username>root@192.168.122.1</username>
-    <time>1792079349.0418</time>
-    <description>/firewall_nat.php made changes</description>
+    <description>/api/syslog/settings/set made changes</description>
+    <time>1792140554.0167</time>
   </revision>
   <OPNsense>
     <DHCRelay version="1.0.1"/>
@@ -1001,7 +1001,20 @@
         <maxpreserve>31</maxpreserve>
         <maxfilesize/>
       </general>
-      <destinations/>
+      <destinations>
+        <destination uuid="a73cef1e-354f-4e19-b280-02be7bb735c6">
+          <enabled>1</enabled>
+          <transport>udp4</transport>
+          <program>filterlog</program>
+          <level>debug,info,notice,warn,err,crit,alert,emerg</level>
+          <facility>kern,user,mail,daemon,auth,syslog,lpr,news,uucp,cron,authpriv,ftp,ntp,security,console,local0,local1,local2,local3,local4,local5,local6,local7</facility>
+          <hostname>10.10.40.11</hostname>
+          <certificate/>
+          <port>1514</port>
+          <rfc5424>1</rfc5424>
+          <description>SecOps Alloy Telemetry</description>
+        </destination>
+      </destinations>
     </Syslog>
     <TrafficShaper version="1.0.3">
       <pipes/>
