@@ -1,0 +1,99 @@
+==========================================================
+Laporan Hasil Threat Hunting & Analisis Graf Baseline (S8)
+Tanggal   : 2026-10-16 19:34:40
+Kondisi   : Baseline Permisif (Mode Deteksi Saja)
+Target    : SecOps (Loki + Zeek Sensor)
+==========================================================
+
+>>> BAGIAN A: Evaluasi Katalog Aturan Threat Hunting (LogQL):
+  [RULE HUNT-01] Fan-out Scanning (T1046)     : TRIGGERED (14 target unik dipindai dari web1)
+  [RULE HUNT-02] Lateral SSH Movement (T1021) : TRIGGERED (6 rute lompatan lateral terdeteksi: [('10.10.10.11', '10.10.30.11'), ('10.10.20.12', '10.10.30.11'), ('10.10.50.11', '10.10.40.11'), ('10.10.10.11', '10.10.20.11'), ('10.10.30.11', '203.0.113.11'), ('10.10.20.11', '10.10.30.11')])
+  [RULE HUNT-03] OpenCanary Decoy Touch (S5)  : TRIGGERED (2 alert interaksi honeypot)
+  [RULE HUNT-04] DB Egress Exfiltration (T1048): TRIGGERED (15 aliran data DB ke WAN teridentifikasi)
+  [RULE HUNT-05] Cross-Tier Web->DB Bypass    : TRIGGERED (14 koneksi langsung melanggar 3-tier)
+
+>>> BAGIAN B: Analisis Graf Baseline & Sentralitas Tepi NetworkX:
+==========================================================
+LAPORAN ANALISIS GRAF BASELINE & THREAT HUNTING (S8)
+Waktu Analisis : 2026-10-16 12:34:41
+Total Log Aliran : 1568 koneksi
+Total Node Graf  : 10 entitas
+Total Tepi Unik  : 90 kanal komunikasi
+Tepi Normal      : 34 kanal (37.8%)
+Tepi Anomali     : 56 kanal (62.2%)
+==========================================================
+
+--- 1. Matriks Out-Degree Sentralitas (Deteksi Pivot Lateral Terbesar) ---
+  * Node web1                 : 6 kanal keluar unik
+  * Node secops               : 6 kanal keluar unik
+  * Node web2                 : 4 kanal keluar unik
+  * Node app1                 : 3 kanal keluar unik
+  * Node app2                 : 3 kanal keluar unik
+  * Node db1                  : 3 kanal keluar unik
+
+--- 2. Rincian Tepi Anomali Terdeteksi (Threat Hunting Findings) ---
+SUMBER          DESTINASI       PORT   PROTO KATEGORI ANOMALI               JUMLAH
+--------------------------------------------------------------------------------
+web1            app1            0      icmp  ANOMALY_UNEXPECTED_PORT_0      6
+web1            app1            21     tcp   ANOMALY_UNEXPECTED_PORT_21     1
+web1            app1            22     tcp   ANOMALY_LATERAL_SSH            22
+web1            app1            23     tcp   ANOMALY_UNEXPECTED_PORT_23     1
+web1            app1            80     tcp   ANOMALY_UNEXPECTED_PORT_80     2
+web1            app1            443    tcp   ANOMALY_UNEXPECTED_PORT_443    1
+web1            app1            1433   tcp   ANOMALY_UNEXPECTED_PORT_1433   1
+web1            app1            2222   tcp   ANOMALY_UNEXPECTED_PORT_2222   1
+web1            app1            3306   tcp   ANOMALY_UNEXPECTED_PORT_3306   1
+web1            app1            5432   tcp   ANOMALY_UNEXPECTED_PORT_5432   1
+web1            app1            6379   tcp   ANOMALY_UNEXPECTED_PORT_6379   1
+web1            app1            8443   tcp   ANOMALY_UNEXPECTED_PORT_8443   1
+web1            app2            21     tcp   ANOMALY_UNEXPECTED_PORT_21     1
+web1            app2            22     tcp   ANOMALY_LATERAL_SSH            1
+web1            app2            23     tcp   ANOMALY_UNEXPECTED_PORT_23     1
+web1            app2            80     tcp   ANOMALY_UNEXPECTED_PORT_80     1
+web1            app2            443    tcp   ANOMALY_UNEXPECTED_PORT_443    1
+web1            app2            1433   tcp   ANOMALY_UNEXPECTED_PORT_1433   1
+web1            app2            2222   tcp   ANOMALY_UNEXPECTED_PORT_2222   1
+web1            app2            3306   tcp   ANOMALY_UNEXPECTED_PORT_3306   1
+web1            app2            5432   tcp   ANOMALY_UNEXPECTED_PORT_5432   1
+web1            app2            6379   tcp   ANOMALY_UNEXPECTED_PORT_6379   1
+web1            app2            8443   tcp   ANOMALY_UNEXPECTED_PORT_8443   1
+web1            db1             21     tcp   ANOMALY_TIER_BYPASS_WEB_TO_DB  1
+web1            db1             22     tcp   ANOMALY_LATERAL_SSH            3
+web1            db1             23     tcp   ANOMALY_TIER_BYPASS_WEB_TO_DB  1
+web1            db1             80     tcp   ANOMALY_TIER_BYPASS_WEB_TO_DB  1
+web1            db1             443    tcp   ANOMALY_TIER_BYPASS_WEB_TO_DB  1
+web1            db1             1433   tcp   ANOMALY_TIER_BYPASS_WEB_TO_DB  1
+web1            db1             2222   tcp   ANOMALY_TIER_BYPASS_WEB_TO_DB  1
+web1            db1             3306   tcp   ANOMALY_TIER_BYPASS_WEB_TO_DB  1
+web1            db1             5432   tcp   ANOMALY_TIER_BYPASS_WEB_TO_DB  1
+web1            db1             6379   tcp   ANOMALY_TIER_BYPASS_WEB_TO_DB  1
+web1            db1             8080   tcp   ANOMALY_TIER_BYPASS_WEB_TO_DB  1
+web1            db1             8443   tcp   ANOMALY_TIER_BYPASS_WEB_TO_DB  1
+web1            canary1         21     tcp   ANOMALY_DECOY_TOUCH            2
+web1            canary1         22     tcp   ANOMALY_LATERAL_SSH            1
+web1            canary1         23     tcp   ANOMALY_DECOY_TOUCH            1
+web1            canary1         80     tcp   ANOMALY_DECOY_TOUCH            5
+web1            canary1         443    tcp   ANOMALY_DECOY_TOUCH            1
+web1            canary1         1433   tcp   ANOMALY_DECOY_TOUCH            1
+web1            canary1         2222   tcp   ANOMALY_DECOY_TOUCH            5
+web1            canary1         3306   tcp   ANOMALY_DECOY_TOUCH            4
+web1            canary1         5432   tcp   ANOMALY_DECOY_TOUCH            1
+web1            canary1         6379   tcp   ANOMALY_DECOY_TOUCH            2
+web1            canary1         8080   tcp   ANOMALY_DECOY_TOUCH            1
+web1            canary1         8443   tcp   ANOMALY_DECOY_TOUCH            1
+app1            db1             0      icmp  ANOMALY_UNEXPECTED_PORT_0      4
+app1            db1             22     tcp   ANOMALY_LATERAL_SSH            2
+db1             attacker        0      icmp  ANOMALY_DB_EGRESS_EXFIL        2
+db1             attacker        4444   tcp   ANOMALY_DB_EGRESS_EXFIL        1
+db1             attacker        8000   tcp   ANOMALY_DB_EGRESS_EXFIL        2
+db1             8.8.8.8         53     tcp   ANOMALY_DB_EGRESS_EXFIL        70
+db1             8.8.8.8         53     udp   ANOMALY_DB_EGRESS_EXFIL        30
+canary1         secops          0      icmp  ANOMALY_UNEXPECTED_PORT_0      1
+canary1         8.8.8.8         0      icmp  ANOMALY_UNEXPECTED_PORT_0      1
+
+--- 3. Verifikasi True Positive / False Positive Kontrol Baseline ---
+  * False Positive (Trafik legal aplikasi dianggap anomali) : 0 kejadian (0.0% FP)
+  * True Positive (Serangan S1-S6 berhasil diidentifikasi)   : 56 kejadian unik
+  * Akurasi Klasifikasi Aturan Hunting Baseline            : 100.0%
+
+[OK] Ringkasan data graf tersimpan di: /tmp/hunting_graph_summary.json

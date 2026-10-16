@@ -1,0 +1,96 @@
+# telemetry/hunting/hunting-rules.yaml
+# Aturan Threat Hunting Berbasis LogQL (Loki) & Analisis Perilaku
+# Proyek 4: Data Center Micro-segmentation & Lateral Movement Hunting
+version: "1.0"
+description: "Katalog aturan threat hunting untuk deteksi pergerakan lateral, pemindaian, eksfiltrasi, dan sentuhan decoy"
+
+rules:
+  - id: "HUNT-01"
+    name: "Fan-out Network Service Discovery"
+    mitre_attack:
+      technique_id: "T1046"
+      technique_name: "Network Service Discovery"
+      tactic: "Discovery"
+    severity: "HIGH"
+    data_source: "zeek.conn"
+    logql_query: |
+      sum by (id_orig_h) (
+        count_over_time({job="zeek", log_type="conn"} [1m])
+      ) > 5
+    description: >
+      Mendeteksi anomali pemindaian lateral di mana satu host asal internal
+      membuka koneksi ke banyak host/port tujuan dalam jendela waktu 1 menit.
+    threshold:
+      window: "1m"
+      min_events: 5
+
+  - id: "HUNT-02"
+    name: "Unauthorized Lateral SSH Movement"
+    mitre_attack:
+      technique_id: "T1021.004"
+      technique_name: "Remote Services: SSH"
+      tactic: "Lateral Movement"
+    severity: "CRITICAL"
+    data_source: "zeek.conn"
+    logql_query: |
+      {job="zeek", log_type="conn"} |= `"id.resp_p":22` | json | id_orig_h != "10.10.40.11" and id_orig_h != "192.168.122.81"
+    description: >
+      Mendeteksi inisiasi sesi SSH antar-server internal beban kerja (East-West).
+      Dalam arsitektur micro-segmentation, seluruh akses SSH wajib melalui bastion
+      secops (10.10.40.11 / 192.168.122.81). Setiap sesi SSH antar web/app/db adalah indikasi lateral movement.
+    threshold:
+      window: "5m"
+      min_events: 1
+
+  - id: "HUNT-03"
+    name: "OpenCanary Honeypot Decoy Touch"
+    mitre_attack:
+      technique_id: "T1018"
+      technique_name: "Remote System Discovery"
+      tactic: "Discovery / Decoy Trigger"
+    severity: "CRITICAL"
+    data_source: "opencanary"
+    logql_query: |
+      {job="opnsense-syslog", app_name="opencanaryd"}
+    description: >
+      Mendeteksi interaksi atau probe terhadap decoy canary1 (10.10.50.11).
+      Karena canary1 bukan server produksi dan tidak memiliki peran resmi,
+      setiap koneksi masuk merupakan true positive upaya eksplorasi lateral oleh penyerang.
+    threshold:
+      window: "1m"
+      min_events: 1
+
+  - id: "HUNT-04"
+    name: "Database Direct Egress Exfiltration"
+    mitre_attack:
+      technique_id: "T1048"
+      technique_name: "Exfiltration Over Alternative Protocol"
+      tactic: "Exfiltration"
+    severity: "CRITICAL"
+    data_source: "zeek.conn"
+    logql_query: |
+      {job="zeek", log_type="conn"} | json | id_orig_h =~ "10\\.10\\.30\\..*" and id_resp_h !~ "10\\..*"
+    description: >
+      Mendeteksi koneksi keluar (egress) langsung dari subnet Database (10.10.30.0/24)
+      menuju destinasi publik non-RFC 1918 (WAN / Internet). Database tidak boleh
+      memiliki hak akses internet langsung.
+    threshold:
+      window: "1m"
+      min_events: 1
+
+  - id: "HUNT-05"
+    name: "Direct Cross-Tier Database Bypass"
+    mitre_attack:
+      technique_id: "T1046"
+      technique_name: "Network Service Discovery / Tier Bypass"
+      tactic: "Discovery / Lateral Movement"
+    severity: "HIGH"
+    data_source: "zeek.conn"
+    logql_query: |
+      {job="zeek", log_type="conn"} | json | id_orig_h =~ "10\\.10\\.10\\..*" and id_resp_h =~ "10\\.10\\.30\\..*"
+    description: >
+      Mendeteksi aliran komunikasi langsung dari Web DMZ (10.10.10.0/24) ke Database (10.10.30.0/24).
+      Dalam pola 3-tier yang benar, Web DMZ hanya boleh berkomunikasi dengan Application tier.
+    threshold:
+      window: "5m"
+      min_events: 1
