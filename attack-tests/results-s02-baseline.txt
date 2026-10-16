@@ -1,0 +1,19 @@
+==========================================================
+Hasil Pengujian Skenario S2: Lateral Movement Berantai (Baseline)
+Tanggal : 2026-10-16 19:15:46
+Kondisi : Permisif (Pre-Hardening)
+Kunci   : Ed25519 Compromised Decoy Key
+==========================================================
+
+STATUS LOMPATAN LATERAL:
+1. Hop 1 (web1 -> app1:22)       : BERHASIL (app1 dcadmin )
+2. Hop 2 (web1 -> app1 -> db1:22) : BERHASIL (db1 dcadmin )
+3. Direct Jump (web1 -> db1:22)  : BERHASIL (db1 dcadmin )
+
+ANALISIS KERENTANAN BASELINE:
+- Dalam kondisi permisif, tidak ada segmentasi zona pada lapisan port SSH (Port 22).
+- Penyerang yang menguasai web1 dapat melakukan pivoting berantai hingga ke database internal (db1).
+- Penyerang bahkan dapat membypass tier aplikasi dan langsung mengakses db1 via SSH dari zona Web DMZ.
+- Target Hardening (Fase 7):
+  * Web DMZ dilarang melakukan koneksi SSH ke zona manapun (Drop).
+  * Port 22 di seluruh workload hanya boleh menerima koneksi dari SecOps Bastion (10.10.40.11).
