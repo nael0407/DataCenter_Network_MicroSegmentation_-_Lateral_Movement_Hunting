@@ -1,0 +1,32 @@
+==========================================================
+Hasil Pengujian Skenario S9 (Bagian 2): Kegagalan Node Spine
+Tanggal   : 2026-10-16 21:09:16
+Target    : spine1 (192.168.122.21 / AS 65000)
+Metode    : virsh destroy spine1 -> virsh start spine1
+==========================================================
+
+1. PENGUKURAN WAKTU KONVERGENSI FAILOVER (SPINE1 DOWN):
+- Waktu Crash                : 2026-10-16 21:08:39.970
+- Transmitted Probe (0.1s)   : 50 paket
+- Received Probe             : 50 paket
+- Dropped Probe              : 0 paket
+- Estimasi Waktu Konvergensi : 0 milidetik (< 1 detik / Sub-Second)
+- Reaksi BFD di Seluruh Leaf : Ketiga leaf (leaf1, leaf2, leaf3) serentak
+                               mendeteksi Spine1 DOWN dan mengalihkan 100%
+                               lalu lintas overlay ke Spine2.
+
+2. KONTINUITAS BISNIS & ALUR APLIKASI (DEGRADED STATE):
+- Alur Internal 3-Tier (Web->App->DB) : 200 OK (HTTP 200 OK)
+- Alur Publik Eksternal (WAN->Web)    : 200 OK (HTTP 200 OK via OPNsense NAT)
+- Ketahanan Arsitektur                : Layanan aplikasi tidak mengalami *downtime*
+                                        meskipun salah satu sakelar Spine mati total.
+
+3. INTEGRITAS MICRO-SEGMENTATION INVARIANT:
+- Direct Bypass Web DMZ -> DB (5432)  : BLOCKED (Tetap Diblokir Total)
+- Lateral SSH Web DMZ -> App (22)    : BLOCKED (Tetap Diblokir Total)
+- Zero-Trust Egress DB -> WAN        : BLOCKED (Tetap Diblokir Total)
+
+4. PEMULIHAN NODE SPINE1 (RECOVERY):
+- Waktu Restorasi                     : 2026-10-16 21:08:57.332
+- Status BFD Pasca-Booting            : 6/6 Sesi BFD UP di seluruh Leaf (leaf1-3)
+- Status Fabric                       : Dual-Spine Redundancy Aktif Kembali Penuh
