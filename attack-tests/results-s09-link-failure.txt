@@ -1,0 +1,29 @@
+==========================================================
+Hasil Pengujian Skenario S9: Ketahanan Link Fabric & Konvergensi
+Tanggal   : 2026-10-16 21:05:36
+Target    : Link leaf1 (eth1) <-> spine1 (eth1)
+Metode    : virsh domif-setlink leaf1 52:54:00:04:11:11 down/up
+==========================================================
+
+1. PENGUKURAN WAKTU KONVERGENSI FAILOVER (LINK DOWN):
+- Waktu Injeksi              : 2026-10-16 21:05:16.021
+- Transmitted Probe (0.1s)   : 40 paket
+- Received Probe             : 40 paket
+- Dropped Probe              : 0 paket
+- Estimasi Waktu Konvergensi : 0 milidetik (< 1 detik / Sub-Second)
+- Status Aplikasi 3-Tier     : SUCCESS (200 OK) (HTTP 200 OK melintasi Spine2)
+- Reaksi BFD & FIB           : Sesi BFD Spine1 seketika down; FIB kernel Linux
+                               mengalihkan 100% nexthop ke Spine2 (eth2) secara otomatis.
+
+2. PENGUKURAN PEMULIHAN LINK (LINK RECOVERY / UP):
+- Waktu Restorasi            : 2026-10-16 21:05:28.910
+- Packet Loss saat Recovery  : 0%packetloss (Lossless Failback)
+- Status BFD Pasca-Restorasi : Both Peers UP (Spine1 & Spine2)
+- Status FIB Pasca-Restorasi : 2-Path ECMP Multipath Aktif Kembali
+
+3. INTEGRITAS SEGMENTASI SELAMA KEGAGALAN (SECURITY INVARIANT):
+- Direct Bypass Web DMZ -> DB (5432) : BLOCKED (Drop 100%)
+- Lateral SSH Web DMZ -> App (22)   : BLOCKED (Drop 100%)
+- Kesimpulan Keamanan                : Tidak ada kebocoran rute (no route leaking)
+                                       maupun bypass kebijakan firewall saat
+                                       terjadi kegagalan fisik jaringan data center.
