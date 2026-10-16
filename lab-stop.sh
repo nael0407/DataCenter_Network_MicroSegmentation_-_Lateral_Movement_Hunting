@@ -23,8 +23,21 @@ for vm in "${VMS[@]}"; do
 done
 
 echo
-echo "Menunggu proses shutdown OS virtual (5 detik)..."
-sleep 5
+echo "Menunggu seluruh VM selesai melakukan flush disk dan shut off..."
+for i in {1..35}; do
+  running_count=0
+  for vm in "${VMS[@]}"; do
+    state=$($VIRSH domstate "$vm" 2>/dev/null || echo "shut off")
+    if [ "$state" = "running" ] || [ "$state" = "in shutdown" ]; then
+      running_count=$((running_count + 1))
+    fi
+  done
+  if [ "$running_count" -eq 0 ]; then
+    echo "  [OK] Seluruh VM telah berhasil dimatikan dengan rapi (shut off) dalam ${i} detik."
+    break
+  fi
+  sleep 1
+done
 
 echo
 echo "=========================================================="
