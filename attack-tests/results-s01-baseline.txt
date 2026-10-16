@@ -1,0 +1,33 @@
+==========================================================
+Hasil Pengujian Skenario S1 (Baseline Permisif)
+Tanggal   : 2026-10-16 19:12:04
+Sumber    : web1 (10.10.10.11)
+Port Uji  : 21,22,23,80,443,1433,2222,3306,5432,6379,8080,8443
+Durasi    : 14.312712954s
+==========================================================
+
+RINGKASAN PORT TERBUKA YANG DITEMUKAN PENYERANG:
+Nmap scan report for 10.10.20.11
+PORT     STATE SERVICE
+8080/tcp open  http-proxy
+Nmap scan report for 10.10.20.12
+PORT     STATE SERVICE
+8080/tcp open  http-proxy
+Nmap scan report for 10.10.30.11
+PORT     STATE SERVICE
+5432/tcp open  postgresql
+Nmap scan report for 10.10.50.11
+PORT     STATE SERVICE
+2222/tcp open  EtherNetIP-1
+3306/tcp open  mysql
+6379/tcp open  redis
+8080/tcp open  http-proxy
+
+ANALISIS KONDISI PERMISIF (PRE-HARDENING):
+- Penyerang di web1 (Web DMZ) secara bebas dapat memetakan seluruh port internal:
+  * app1 (10.10.20.11) -> 22/tcp (ssh), 8080/tcp (mock-app)
+  * app2 (10.10.20.12) -> 22/tcp (ssh), 8080/tcp (mock-app)
+  * db1  (10.10.30.11) -> 22/tcp (ssh), 5432/tcp (mock-db postgres)
+  * canary1 (10.10.50.11) -> 21, 22, 23, 80, 2222, 3306, 6379, 8080
+- Blast Radius: 100% (Seluruh zona dan layanan internal terekspos ke Web DMZ).
+- Pelanggaran Prinsip: Web DMZ memiliki visibilitas langsung ke Database Tier (Port 5432).
