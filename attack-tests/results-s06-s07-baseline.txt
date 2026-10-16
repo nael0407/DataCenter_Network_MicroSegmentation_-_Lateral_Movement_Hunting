@@ -1,0 +1,31 @@
+==========================================================
+Hasil Pengujian Skenario S6 & S7 (Baseline Permisif)
+Tanggal   : 2026-10-16 19:26:15
+Kondisi   : Permisif (Pre-Hardening)
+==========================================================
+
+1. HASIL SKENARIO S6 (DATA EXFILTRATION DARI DB1 - MITRE T1041 / T1048):
+- Status              : BERHASIL (Eksfiltrasi Lolos 100%)
+- HTTP Response C2    : {"status": "received", "code": 200}
+- ICMP Egress Ping    : SUCCESS
+- Payload Diterima C2 : {"exfiltration_id": "EXFIL-DB1-001", "source_tier": "database", "node": "db1", "table": "core_accounts", "confidential_records": 42, "sample_pii": "account_no=4111-9921-001;balance=15000000;owner=CONFIDENTIAL"}
+- Analisis Risiko     : Pada baseline permisif, zona Database (10.10.30.11) memiliki
+                        konektivitas keluar (egress) tak terbatas langsung ke WAN eksternal.
+                        Penyerang yang berhasil menyusup ke database server dapat langsung
+                        mengirimkan berkas atau tabel rahasia ke server C2 di internet tanpa hambatan.
+- Target Hardening (Fase 7):
+  * Terapkan kebijakan 'Egress Zero-Trust': blokir seluruh trafik keluar dari zona DB (VLAN 30) ke WAN.
+  * Terapkan nftables egress drop pada host db1 (hanya boleh merespons koneksi masuk dari zona App).
+
+2. HASIL SKENARIO S7 (EXTERNAL NORTH-SOUTH PERIMETER BOUNDARY):
+- Status Kontrol Perimeter:
+WEB_PUBLICATION: PASS (HTTP 200 OK via OPNsense NAT)
+DIRECT_INTERNAL_DB: BLOCKED (Perimeter Berhasil Menjatuhkan Paket)
+DIRECT_INTERNAL_APP: BLOCKED (Perimeter Berhasil Menjatuhkan Paket)
+WAN_PORT_5432: BLOCKED (Firewall Default Drop)
+WAN_PORT_22: BLOCKED (Firewall Default Drop)
+- Analisis Keamanan   :
+  * Publikasi Web DMZ (port 80) melalui OPNsense NAT/Port Forwarding berfungsi sebagaimana mestinya (200 OK).
+  * Upaya penyerang eksternal untuk menembus langsung ke subnet privat internal RFC 1918 (10.10.30.11, 10.10.20.11)
+    dan port non-publik firewall (5432, 22) berhasil DIBLOKIR total oleh perimeter OPNsense.
+  * Seluruh upaya penyerangan perimeter tercatat secara real-time pada log filterlog OPNsense dan diindeks di Loki.
