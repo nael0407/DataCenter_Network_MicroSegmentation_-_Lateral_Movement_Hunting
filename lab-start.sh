@@ -41,6 +41,11 @@ for leaf_ip in "192.168.122.31" "192.168.122.32" "192.168.122.33"; do
   fi
 done
 
+# Sinkronisasi jembatan sensor di secops
+if ssh $SSH_OPTS "dcadmin@192.168.122.81" "sudo /usr/local/bin/setup-sensor-bridge.sh" >/dev/null 2>&1; then
+  echo "[OK] Sensor bridge (br-sensor) tersinkronisasi di secops"
+fi
+
 echo
 echo "=========================================================="
 echo "Status Seluruh VM Lab Saat Ini:"

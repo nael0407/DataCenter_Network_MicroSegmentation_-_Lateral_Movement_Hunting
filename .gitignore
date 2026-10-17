@@ -31,6 +31,16 @@ fabric/opnsense/iso/
 *.pyc                                                                                            
 __pycache__/                                                                                     
                                                                                                     
+# Artefak & Vault Bukti DFIR (ISO/IEC 27037 Raw Evidence)
+dfir/evidence/**/*.pcap
+dfir/evidence/**/*.pcapng
+dfir/evidence/**/*.tar.gz
+dfir/evidence/**/*.tgz
+dfir/evidence/**/*.raw
+dfir/evidence/**/*.dump
+!dfir/evidence/**/.gitkeep
+!dfir/evidence/manifest-template.json
+
 # OS & Editor                                                                                    
 .DS_Store                                                                                        
 .idea/                                                                                           

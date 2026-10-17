@@ -1,0 +1,143 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ISO/IEC 27037 Digital Evidence Manifest",
+  "description": "Spesifikasi manifest barang bukti digital terstandar ISO/IEC 27037:2012 untuk investigasi insiden pada Data Center Microsegmentation Lab",
+  "case_metadata": {
+    "case_id": "CASE-2026-DFIR-001",
+    "case_name": "DC Microsegmentation Post-Breach Forensic Investigation",
+    "classification": "INTERNAL / EVIDENCE ARCHIVE",
+    "investigator": {
+      "name": "Natanael",
+      "role": "Lead Incident Responder & Forensic Analyst",
+      "organization": "DC Microseg Cyber Defense Team"
+    },
+    "incident_summary": "Investigasi aktivitas pergerakan lateral, pembajakan otentikasi SSH, dan percobaan eksfiltrasi data nasabah pada arsitektur data center multi-tier",
+    "created_at_utc": "2026-10-17T12:00:00Z",
+    "environment": {
+      "infrastructure": "KVM/libvirt Spinal-Leaf EVPN/VXLAN Data Center",
+      "forensic_workstation": "secops (10.10.40.11 / 192.168.122.81)",
+      "time_standard": "UTC (Synchronized with host kvm-clock & Ubuntu NTP)"
+    }
+  },
+  "evidence_standards": {
+    "collection_framework": "ISO/IEC 27037:2012 (Guidelines for identification, collection, acquisition and preservation of digital evidence)",
+    "order_of_volatility": "RFC 3227 (Soket Jaringan -> Memori/Proc -> Log Sistem -> Disk)",
+    "integrity_algorithm": "SHA-256 (Primary) & SHA-512 (Secondary)"
+  },
+  "evidence_items": [
+    {
+      "evidence_id": "EVD-NET-YYYYMMDD-001",
+      "evidence_type": "network_pcap",
+      "description": "Raw packet capture pada sensor mirror port interface br-sensor",
+      "source_node": {
+        "hostname": "secops",
+        "role": "Traffic Sniffer / Forensic Tap",
+        "interface": "br-sensor (mirror-l1, mirror-l2, mirror-l3)",
+        "ip_management": "192.168.122.81",
+        "ip_data": "10.10.40.11"
+      },
+      "acquisition": {
+        "tool_name": "tcpdump / dumpcap",
+        "tool_version": "4.99.4",
+        "command_executed": "tcpdump -i br-sensor -s 0 -w <filename> -U",
+        "start_time_utc": "2026-10-17T12:10:00.000Z",
+        "end_time_utc": "2026-10-17T12:15:00.000Z",
+        "collector_name": "Natanael",
+        "acquisition_type": "Live Non-Destructive Ingress Capture",
+        "filter_applied": "tcp or icmp"
+      },
+      "file_properties": {
+        "filename": "evd-net-s06-db-exfil.pcap",
+        "relative_path": "evidence/network/evd-net-s06-db-exfil.pcap",
+        "file_size_bytes": 1048576,
+        "mime_type": "application/vnd.tcpdump.pcap",
+        "file_permissions": "0440"
+      },
+      "cryptographic_hashes": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha512": "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e",
+        "hash_timestamp_utc": "2026-10-17T12:15:05.000Z"
+      },
+      "chain_of_custody_log": [
+        {
+          "timestamp_utc": "2026-10-17T12:15:00.000Z",
+          "action": "ACQUISITION_COMPLETED",
+          "actor": "Natanael (Forensic Collector)",
+          "source": "br-sensor kernel buffer (secops)",
+          "destination": "/var/forensics/raw/evd-net-s06-db-exfil.pcap",
+          "hash_verified": true,
+          "notes": "Penangkapan paket selesai. Hash SHA-256 awal dihitung secara otomatis."
+        },
+        {
+          "timestamp_utc": "2026-10-17T12:16:00.000Z",
+          "action": "VAULT_TRANSFER_AND_LOCK",
+          "actor": "package-evidence.sh",
+          "source": "/var/forensics/raw/evd-net-s06-db-exfil.pcap",
+          "destination": "dfir/evidence/network/evd-net-s06-db-exfil.pcap",
+          "hash_verified": true,
+          "notes": "Bukti ditransfer ke vault repositori, dikunci read-only (chmod 440). Integritas hash cocok 100%."
+        }
+      ]
+    },
+    {
+      "evidence_id": "EVD-HOST-YYYYMMDD-001",
+      "evidence_type": "host_triage_tarball",
+      "description": "Paket kompresi artefak volatil & non-volatil korban (soket, proc, auth.log, bash history)",
+      "source_node": {
+        "hostname": "web1",
+        "role": "Web DMZ Ingress (Crime Scene A)",
+        "ip_management": "N/A (Isolated per Prinsip 6.5)",
+        "ip_data": "10.10.10.11",
+        "mac_address": "52:54:00:04:41:01"
+      },
+      "acquisition": {
+        "tool_name": "triage-host-evidence.sh",
+        "tool_version": "1.0",
+        "command_executed": "bash triage-host-evidence.sh --target 10.10.10.11 --out /var/forensics/host",
+        "start_time_utc": "2026-10-17T12:20:00.000Z",
+        "end_time_utc": "2026-10-17T12:20:25.000Z",
+        "collector_name": "Natanael",
+        "acquisition_type": "Live Host Triage via Bastion ProxyJump",
+        "volatility_order": [
+          "1. Active Network Connections & Sockets (ss -tulpn, ss -tanp)",
+          "2. Running Processes & Kernel Memory Maps (ps auxwwfe, /proc/$PID/maps)",
+          "3. Logged-in Users & Session Environment (w, who, env)",
+          "4. System Authentication Logs & Shell Histories (/var/log/auth.log, .bash_history)",
+          "5. Modified File Metadata within 60 minutes (find / -mmin -60 -ls)"
+        ]
+      },
+      "file_properties": {
+        "filename": "evd-host-web1-triage.tar.gz",
+        "relative_path": "evidence/host/evd-host-web1-triage.tar.gz",
+        "file_size_bytes": 524288,
+        "mime_type": "application/gzip",
+        "file_permissions": "0440"
+      },
+      "cryptographic_hashes": {
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sha512": "cf83e1357eefb8bdf1542850d66d8007d620e4050b5715dc83f4a921d36ce9ce47d0d13c5d85f2b0ff8318d2877eec2f63b931bd47417a81a538327af927da3e",
+        "hash_timestamp_utc": "2026-10-17T12:20:28.000Z"
+      },
+      "chain_of_custody_log": [
+        {
+          "timestamp_utc": "2026-10-17T12:20:25.000Z",
+          "action": "TRIAGE_ACQUIRED",
+          "actor": "Natanael (Forensic Collector)",
+          "source": "web1 (10.10.10.11)",
+          "destination": "/tmp/triage-web1.tar.gz",
+          "hash_verified": true,
+          "notes": "Pengumpulan artefak host selesai dalam 25 detik sesuai RFC 3227. Paket dikompresi."
+        },
+        {
+          "timestamp_utc": "2026-10-17T12:21:00.000Z",
+          "action": "EVIDENCE_VAULT_INGESTION",
+          "actor": "package-evidence.sh",
+          "source": "/tmp/triage-web1.tar.gz",
+          "destination": "dfir/evidence/host/evd-host-web1-triage.tar.gz",
+          "hash_verified": true,
+          "notes": "Berkas triage dipindahkan ke evidence vault, dihitung hash SHA-256 dan dikunci read-only."
+        }
+      ]
+    }
+  ]
+}
