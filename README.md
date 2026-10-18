@@ -233,7 +233,41 @@ This lab environment features an enterprise-grade Digital Forensics and Incident
 +----------------------------------------------------------------------------------------------------+
 ```
 
-### Key DFIR Capabilities:
+### 8.1 6-Stage Forensic Investigation Lifecycle
+
+1. **Trigger & Detection:** Security anomalies or intrusion alarms triggered across the fabric via Zeek NSM, OPNsense SPI firewall filterlog, or OpenCanary honeypot telemetry.
+2. **Network Evidence Acquisition:** Automated packet capture on the `secops` passive monitoring interface (`br-sensor`) using [`capture-network-evidence.sh`](dfir/acquisition/capture-network-evidence.sh), capturing full raw payload in PCAP format.
+3. **Live Host Triage:** Remote, non-destructive collection across 7 RFC 3227 volatility tiers (memory, network sockets, active processes, audit logs, command history) executed 100% in RAM (`/dev/shm`) via Bastion ProxyJump using [`triage-host-evidence.sh`](dfir/acquisition/triage-host-evidence.sh).
+4. **Preservation & Cryptographic Hashing:** Immutable packaging into isolated evidence vaults using [`package-evidence.py`](dfir/acquisition/package-evidence.py), computing dual SHA-256 and SHA-512 hashes, creating ISO/IEC 27037 `manifest.json` Chain of Custody records, and enforcing read-only permissions (`chmod 0440`). Integrity is independently verifiable via [`verify-evidence-integrity.py`](dfir/evidence/verify-evidence-integrity.py).
+5. **Post-Mortem Analysis & Super-Timeline Reconstruction:** Deep protocol inspection with stream carving using [`extract-pcap-artifacts.py`](dfir/analysis/extract-pcap-artifacts.py), host artifact parsing via [`parse-host-artifacts.py`](dfir/analysis/parse-host-artifacts.py), and cross-correlation into a microsecond UTC chronological super-timeline using [`build-super-timeline.py`](dfir/analysis/build-super-timeline.py).
+6. **Incident Reporting & ATT&CK Mapping:** Comprehensive incident documentation compliant with NIST SP 800-61 Rev 2 and mapped to MITRE ATT&CK enterprise tactics.
+
+### 8.2 DFIR Module Directory & Toolset Architecture
+
+```
+dfir/
+├── acquisition/                     # Automated evidence collection tools
+│   ├── capture-network-evidence.sh  # Passive PCAP packet sniffing on secops br-sensor
+│   ├── triage-host-evidence.sh      # Non-destructive RFC 3227 live host triage collector
+│   ├── package-evidence.py          # Evidence vault packager & read-only lock enforcer
+│   └── benchmark-triage.py          # Triage speed and volatility performance benchmark
+├── evidence/                        # Isolated Evidence Vaults
+│   ├── manifest-template.json       # ISO/IEC 27037 Chain of Custody JSON schema
+│   ├── verify-evidence-integrity.py # Automated cryptographic hash audit engine
+│   ├── network/                     # Archived raw PCAP evidence files
+│   └── host/                        # Archived host triage tarballs & process memory
+├── analysis/                        # Post-mortem analysis and timeline reconstruction
+│   ├── extract-pcap-artifacts.py    # Network stream carving & payload extractor (tshark)
+│   ├── parse-host-artifacts.py      # Host auth log, socket, and command history parser
+│   └── build-super-timeline.py      # Multi-source chronological super-timeline engine
+├── reports/                         # Formal incident reports (NIST SP 800-61 Rev 2)
+│   ├── INCIDENT-REPORT-CASE-01-DB-EXFILTRATION.md
+│   └── INCIDENT-REPORT-CASE-02-LATERAL-SSH.md
+└── demo/                            # 2-minute automated interview walkthrough
+    └── run-dfir-walkthrough.sh
+```
+
+### 8.3 Key DFIR Capabilities & Verified Results:
 1. **Ultra-Fast Live Host Triage (MTTT < 3s):** Automated remote collection of all 7 RFC 3227 volatility tiers via Bastion ProxyJump in a mean duration of **2.36 seconds** (over 10x faster than industry standard < 30s) with **zero disk contamination** on the compromised host (100% RAM `/dev/shm` execution).
 2. **Tamper-Proof Evidence Vaults (ISO/IEC 27037):** Automated packaging of network and host evidence with standard ISO JSON manifests, dual SHA-256 and SHA-512 cryptographic checksums, and enforced read-only permissions (`chmod 0440`) that actively reject tampering attempts (*Permission Denied*).
 3. **Multi-Source Super-Timeline Reconstruction:** High-precision microsecond UTC ISO 8601 cross-correlator integrating: *Network PCAP Stream Carving + Host Triage + OPNsense Firewall Filterlog + Zeek NSM + OpenCanary Deception Alerts*.

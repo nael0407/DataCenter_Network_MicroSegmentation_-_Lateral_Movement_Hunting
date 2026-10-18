@@ -234,7 +234,41 @@ Laboratorium ini dilengkapi modul forensik digital kelas industri yang mematuhi 
 +----------------------------------------------------------------------------------------------------+
 ```
 
-### Keunggulan Kunci Modul DFIR:
+### 8.1 Alur Kerja Investigasi Forensik 6 Tahap
+
+1. **Trigger / Alert:** Terdeteksi indikasi anomali eksfiltrasi atau pergerakan lateral dari sensor Zeek NSM, log filter OPNsense, atau honeypot OpenCanary.
+2. **Perekaman Bukti Jaringan (Network Acquisition):** Sniffing frame data mentah di antarmuka mirror `secops` (`br-sensor`) menggunakan [`capture-network-evidence.sh`](dfir/acquisition/capture-network-evidence.sh) dan disimpan langsung ke format PCAP.
+3. **Live Host Triage Non-Destruktif:** Eksekusi triage terotomasi ke host korban (`web1` atau `db1`) via Bastion ProxyJump mengumpulkan 7 tier volatilitas RFC 3227 (soket jaringan, proses aktif, log otentikasi, riwayat perintah) 100% di RAM (`/dev/shm`) tanpa mencemari disk menggunakan [`triage-host-evidence.sh`](dfir/acquisition/triage-host-evidence.sh).
+4. **Preservasi & Kriptografi Hash (ISO/IEC 27037):** Pengemasan otomatis ke wadah bukti terisolasi menggunakan [`package-evidence.py`](dfir/acquisition/package-evidence.py), menghitung dual hash SHA-256 dan SHA-512, membuat rekaman *Chain of Custody* `manifest.json`, serta mengunci hak akses berkas menjadi *read-only* (`chmod 0440`). Integritas dapat diverifikasi sewaktu-waktu menggunakan [`verify-evidence-integrity.py`](dfir/evidence/verify-evidence-integrity.py).
+5. **Analisis Pasca-Insiden & Rekonstruksi Super-Timeline:** Analisis stream carving payload jaringan menggunakan [`extract-pcap-artifacts.py`](dfir/analysis/extract-pcap-artifacts.py), penguraian log host menggunakan [`parse-host-artifacts.py`](dfir/analysis/parse-host-artifacts.py), dan korelasi linimasa kronologis terpadu berpresisi mikrodetik UTC ISO 8601 lintas 5 sumber data menggunakan [`build-super-timeline.py`](dfir/analysis/build-super-timeline.py).
+6. **Penyusunan Laporan Forensik Resmi:** Penyusunan laporan insiden komprehensif berstandar NIST SP 800-61 Rev 2 dengan pemetaan taktik dan teknik MITRE ATT&CK.
+
+### 8.2 Struktur Direktori & Toolset Modul DFIR
+
+```
+dfir/
+├── acquisition/                     # Skrip otomasi pengumpulan bukti digital
+│   ├── capture-network-evidence.sh  # Sniffing PCAP mentah via antarmuka br-sensor secops
+│   ├── triage-host-evidence.sh      # Kolektor live triage host (RFC 3227 compliant)
+│   ├── package-evidence.py          # Pengemas wadah bukti & pengunci hak akses read-only
+│   └── benchmark-triage.py          # Pengujian kecepatan triage dan performa volatilitas
+├── evidence/                        # Vault penyimpanan bukti (terproteksi .gitignore)
+│   ├── manifest-template.json       # Skema metadata Chain of Custody ISO/IEC 27037
+│   ├── verify-evidence-integrity.py # Validasi otomatis kecocokan hash SHA-256 bukti
+│   ├── network/                     # Direktori arsip berkas PCAP bukti jaringan
+│   └── host/                        # Direktori arsip tarball artefak host triage
+├── analysis/                        # Toolset analisis post-mortem & rekonstruksi
+│   ├── extract-pcap-artifacts.py    # Ekstraksi payload, stream carving tshark
+│   ├── parse-host-artifacts.py      # Parser log otentikasi, soket, dan history eksekusi
+│   └── build-super-timeline.py      # Generator linimasa kronologis terpadu multi-sensor
+├── reports/                         # Laporan resmi hasil investigasi forensik
+│   ├── INCIDENT-REPORT-CASE-01-DB-EXFILTRATION.md
+│   └── INCIDENT-REPORT-CASE-02-LATERAL-SSH.md
+└── demo/                            # Skrip walkthrough dan presentasi singkat
+    └── run-dfir-walkthrough.sh
+```
+
+### 8.3 Keunggulan Kunci & Hasil Verifikasi Modul DFIR:
 1. **Live Host Triage Kilat (MTTT < 3 Detik):** Mengumpulkan 7 tier urutan volatilitas RFC 3227 secara terotomasi via Bastion ProxyJump dalam rata-rata **2.36 detik** (10x lebih cepat dari standar industri < 30s) dengan **0 byte residu pada disk korban** (eksekusi 100% di RAM `/dev/shm`).
 2. **Preservasi Rantai Bukti Terkunci (ISO/IEC 27037):** Pengemasan otomatis ke *Evidence Vault* dengan master manifest JSON, dual hashing SHA-256 dan SHA-512, serta izin baca-saja `chmod 0440` yang terbukti menolak serangan modifikasi berkas (*Permission Denied*).
 3. **Rekonstruksi Super-Timeline Multi-Sumber:** Generator linimasa terpadu berpresisi mikrodetik UTC ISO 8601 yang mengorelasikan log lintas 5 sumber independen: *Network PCAP + Host Triage + OPNsense Firewall + Zeek NSM + OpenCanary Honeypot*.
