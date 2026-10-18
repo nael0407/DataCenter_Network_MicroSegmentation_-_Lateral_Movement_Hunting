@@ -6,6 +6,9 @@
 [![Security](https://img.shields.io/badge/Security-OPNsense_SPI_+_Linux_nftables-red.svg)](#)
 [![Standard](https://img.shields.io/badge/Zero--Trust-NIST_SP_800--207-darkgreen.svg)](#)
 [![Framework](https://img.shields.io/badge/Threat_Framework-MITRE_ATT%26CK-purple.svg)](#)
+[![DFIR_Standard](https://img.shields.io/badge/DFIR_Standard-ISO%2FIEC_27037:2012-blue.svg)](#)
+[![Incident_Response](https://img.shields.io/badge/Incident_Response-NIST_SP_800--61_Rev2-darkgreen.svg)](#)
+[![Host_Triage](https://img.shields.io/badge/Host_Triage-RFC_3227_Order_of_Volatility-orange.svg)](#)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](#)
 
 ---
@@ -216,7 +219,32 @@ This project serves as the foundational data center network for containerized en
 
 ---
 
-## 8. Repository Structure & Documentation Index
+## 8. Digital Forensics & Incident Response (DFIR) Framework
+
+This lab environment features an enterprise-grade Digital Forensics and Incident Response (DFIR) architecture strictly adhering to **ISO/IEC 27037:2012** (*Guidelines for identification, collection, acquisition and preservation of digital evidence*), **RFC 3227** (*Guidelines for Evidence Collection and Archiving / Order of Volatility*), and **NIST SP 800-61 Rev 2** (*Computer Security Incident Handling Guide*).
+
+```
++----------------------------------------------------------------------------------------------------+
+|                                    DFIR INVESTIGATION WORKFLOW                                     |
++----------------------------------------------------------------------------------------------------+
+|  [Network Sniffing]          [Live Host Triage]             [Evidence Preservation] [Super-Timeline]|
+|  Mirroring br-sensor (secops) Order of Volatility (RFC 3227) ISO/IEC 27037 Vault  5-Source Merge   |
+|  Dual-Hash SHA256/512        Zero-Disk Residue (/dev/shm)   Read-Only chmod 0440  Microsecond UTC  |
++----------------------------------------------------------------------------------------------------+
+```
+
+### Key DFIR Capabilities:
+1. **Ultra-Fast Live Host Triage (MTTT < 3s):** Automated remote collection of all 7 RFC 3227 volatility tiers via Bastion ProxyJump in a mean duration of **2.36 seconds** (over 10x faster than industry standard < 30s) with **zero disk contamination** on the compromised host (100% RAM `/dev/shm` execution).
+2. **Tamper-Proof Evidence Vaults (ISO/IEC 27037):** Automated packaging of network and host evidence with standard ISO JSON manifests, dual SHA-256 and SHA-512 cryptographic checksums, and enforced read-only permissions (`chmod 0440`) that actively reject tampering attempts (*Permission Denied*).
+3. **Multi-Source Super-Timeline Reconstruction:** High-precision microsecond UTC ISO 8601 cross-correlator integrating: *Network PCAP Stream Carving + Host Triage + OPNsense Firewall Filterlog + Zeek NSM + OpenCanary Deception Alerts*.
+4. **Published Incident Investigation Reports:**
+   - [Case 01 Incident Report: Database Exfiltration Attempt (`IR-2026-S06`)](dfir/reports/INCIDENT-REPORT-CASE-01-DB-EXFILTRATION.md) — Forensically proves **0 records leaked** (100% dropped by host *nftables* and *OPNsense* gateway).
+   - [Case 02 Incident Report: Lateral SSH Movement & Agent Hijacking (`IR-2026-S02`)](dfir/reports/INCIDENT-REPORT-CASE-02-LATERAL-SSH.md) — Proves complete adversary containment at the initial DMZ pivot (**0% lateral progression**, SSH agent socket abuse prevented via `AllowAgentForwarding no`).
+5. **Interactive 2-Minute Interview Walkthrough:** [`dfir/demo/run-dfir-walkthrough.sh`](dfir/demo/run-dfir-walkthrough.sh) with full technical speaking notes in [Interview Presentation Guide](docs/12-panduan-demo-wawancara-dfir.md).
+
+---
+
+## 9. Repository Structure & Documentation Index
 
 ```
 dc-microseg-lab/
@@ -227,8 +255,14 @@ dc-microseg-lab/
 │   ├── run-benchmark-overhead.py # iperf3 performance benchmark script
 │   └── s01-s10 attack scripts    # Individual test scripts for scenarios S1 through S10
 ├── demo-scripts/                 # Quick presentation scripts
-│   └── demo-2min.sh              # 2-minute automated interview demo script
-├── docs/                         # Comprehensive technical documentation (Phases 0 - 9)
+│   └── demo-2min.sh              # 2-minute automated interview demo script (Microsegmentation)
+├── dfir/                         # Digital Forensics & Incident Response Module (ISO 27037)
+│   ├── acquisition/              # Raw packet capture and RFC 3227 live host triage scripts
+│   ├── analysis/                 # Stream carving, host parser, and super-timeline engine
+│   ├── demo/                     # 2-minute interview walkthrough demo (run-dfir-walkthrough.sh)
+│   ├── evidence/                 # Isolated Evidence Vaults (manifests, SHA256SUMS, 0440 RO)
+│   └── reports/                  # Official Incident Reports (NIST SP 800-61 Rev 2)
+├── docs/                         # Comprehensive technical documentation (Phases 0 - 12)
 │   ├── 00-perencanaan-dan-anggaran.md
 │   ├── 01-infrastruktur-libvirt-dan-node.md
 │   ├── 02-underlay-ebgp-dan-ecmp.md
@@ -239,6 +273,9 @@ dc-microseg-lab/
 │   ├── 07-penegakan-segmentasi.md
 │   ├── 08-ketahanan-fabric-dan-overhead.md
 │   ├── 09-laporan-pengujian-mitre-attack.md
+│   ├── 10-dfir-akuisisi-dan-preservasi-bukti.md
+│   ├── 11-dfir-analisis-post-mortem-dan-super-timeline.md
+│   ├── 12-panduan-demo-wawancara-dfir.md
 │   ├── PANDUAN-DEMO-WAWANCARA.md
 │   └── BLOG-POST-ZERO-TRUST-MICROSEGMENTATION.md
 ├── fabric/                       # Underlay, overlay, and firewall code
@@ -260,7 +297,8 @@ dc-microseg-lab/
 ---
 
 ## License & Author
-- **Author:** Lavvvet
-- **Standard:** NIST SP 800-207 (Zero-Trust Architecture)
-- **Framework:** MITRE ATT&CK for Enterprise
+- **Author:** Natanael Simanjuntak
+- **Zero-Trust Standard:** NIST SP 800-207 (Zero-Trust Architecture)
+- **Forensic Standards:** ISO/IEC 27037:2012, RFC 3227, & NIST SP 800-61 Rev 2
+- **Threat Framework:** MITRE ATT&CK for Enterprise
 - **License:** MIT License

@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ISO/IEC 27037 Consolidated Master Evidence Manifest",
+  "case_metadata": {
+    "case_id": "IR-2026-S06",
+    "case_name": "DC Microsegmentation Post-Breach Forensic Investigation",
+    "classification": "FORENSIC EVIDENCE VAULT (RESTRICTED ACCESS)",
+    "investigator": {
+      "name": "Natanael",
+      "role": "Lead Incident Responder & Forensic Analyst",
+      "organization": "DC Microseg Cyber Defense Team"
+    },
+    "incident_summary": "Investigasi post-breach upaya eksfiltrasi data nasabah dan pergerakan lateral berantai pada arsitektur data center multi-tier",
+    "packaged_at_utc": "2026-10-18T05:06:33Z",
+    "total_evidence_items": 2,
+    "environment": {
+      "infrastructure": "Spine-Leaf EVPN/VXLAN Data Center",
+      "evidence_vault_path": "dfir/evidence/vault_ir_2026_s06",
+      "integrity_policy": "Read-Only (chmod 440 files, chmod 550 directories)"
+    }
+  },
+  "evidence_standards": {
+    "collection_framework": "ISO/IEC 27037:2012 (Guidelines for identification, collection, acquisition and preservation of digital evidence)",
+    "order_of_volatility": "RFC 3227 (Network Sockets -> Process/Memory -> Logs -> Filesystem)",
+    "integrity_algorithms": [
+      "SHA-256",
+      "SHA-512"
+    ]
+  },
+  "evidence_items": [
+    {
+      "evidence_id": "EVD-NET-20261018-050527",
+      "case_id": "IR-2026-S06",
+      "evidence_type": "network_pcap",
+      "description": "Raw packet capture pada sensor mirror port interface br-sensor",
+      "source_node": {
+        "hostname": "secops",
+        "interface": "br-sensor",
+        "ip_management": "192.168.122.81",
+        "ip_data": "10.10.40.11"
+      },
+      "acquisition": {
+        "tool_name": "tcpdump",
+        "tool_version": "4.99.4",
+        "filter_applied": "host 10.10.30.11 or host 203.0.113.11",
+        "start_time_utc": "2026-10-18T05:05:27.000Z",
+        "end_time_utc": "2026-10-18T05:06:13.000Z",
+        "collector_name": "Natanael (Incident Responder)"
+      },
+      "file_properties": {
+        "filename": "EVD-NET-20261018-050527.pcap",
+        "relative_path": "dfir/evidence/vault_ir_2026_s06/network/EVD-NET-20261018-050527.pcap",
+        "file_size_bytes": 6529,
+        "mime_type": "application/vnd.tcpdump.pcap",
+        "file_permissions": "0440"
+      },
+      "cryptographic_hashes": {
+        "sha256": "8c9b7552e51136abf5c7d63af1dd3e6d1bc5e46afee54ebd5dbf9caa3bd0ab87",
+        "sha512": "a227fcab2b6d776ce68a0a00b90de69e885047943d6d7a7508f98a85f0f9da3852847fcfa28e511717d67f1eb337ce853a14aece64ad28196b3c1860b7b83bf1",
+        "hash_timestamp_utc": "2026-10-18T05:06:13.000Z"
+      },
+      "chain_of_custody_log": [
+        {
+          "timestamp_utc": "2026-10-18T05:06:33Z",
+          "action": "EVIDENCE_VAULT_CONSOLIDATION",
+          "actor": "Natanael (via package-evidence.sh)",
+          "source": "dfir/evidence/network/EVD-NET-20261018-050527.pcap",
+          "destination": "dfir/evidence/vault_ir_2026_s06/network/EVD-NET-20261018-050527.pcap",
+          "hash_verified": true,
+          "notes": "Barang bukti PCAP berhasil dikonsolidasikan ke dalam vault resmi, diverifikasi hash identik 100%, dan dikunci read-only (0440)."
+        }
+      ]
+    },
+    {
+      "evidence_id": "EVD-HOST-DB1-20261018-050624",
+      "case_id": "IR-2026-S06",
+      "evidence_type": "host_triage_tarball",
+      "description": "Paket kompresi artefak volatil & non-volatil korban (soket, proc, auth.log, bash history)",
+      "source_node": {
+        "hostname": "db1",
+        "role": "db1",
+        "ip_address": "10.10.30.11",
+        "mac_address": "52:54:00:04:61:01"
+      },
+      "acquisition": {
+        "tool_name": "triage-host-evidence.sh",
+        "tool_version": "1.0",
+        "method": "Live Host Triage via Bastion ProxyJump (RFC 3227 Order of Volatility)",
+        "execution_path": "In-Memory (/dev/shm)",
+        "start_time_utc": "2026-10-18T05:06:24.000Z",
+        "end_time_utc": "2026-10-18T05:06:27.000Z",
+        "duration_seconds": 3.059130719,
+        "collector_name": "Natanael (Lead Incident Responder)"
+      },
+      "file_properties": {
+        "filename": "evd-host-db1-20261018-050624.tar.gz",
+        "relative_path": "dfir/evidence/vault_ir_2026_s06/host/evd-host-db1-20261018-050624.tar.gz",
+        "file_size_bytes": 71197,
+        "mime_type": "application/gzip",
+        "file_permissions": "0440"
+      },
+      "cryptographic_hashes": {
+        "sha256": "c9af3f4d55db5cc7d89761dcc929593d74d17c2f83a821da5da2d35ea78f02f9",
+        "sha512": "ec9b2b29e55679449074b61590a854fdfcb86cedea4ade614831068b639edb0588b02dc8b441f1ff87769f4984b2a1df26fc50ef8fc2504354e96a4eb022cd9e",
+        "hash_timestamp_utc": "2026-10-18T05:06:27.000Z",
+        "integrity_verification": "PASSED (100% Match with Target Source)"
+      },
+      "volatility_order_adherence": [
+        "Tier 1: Active Network Connections & Sockets (ss -tulpn, ss -tanpo, ip neigh, ip route)",
+        "Tier 2: Process States & Execution Memory Context (ps auxwwfe, pstree, /proc/PID/cmdline)",
+        "Tier 3: Open File Descriptors & Memory Maps (lsof -n -P, /proc/PID/fd)",
+        "Tier 4: Active User Sessions & Credential Traces (who, w, last, /tmp/ssh-*)",
+        "Tier 5: System Authentication Logs & Audit Trails (/var/log/auth.log, journalctl ssh)",
+        "Tier 6: Shell Histories & Persistence (.bash_history, crontabs, systemd units)",
+        "Tier 7: File Modifications in Past 60 Minutes (find -mmin -60 -ls)"
+      ],
+      "chain_of_custody_log": [
+        {
+          "timestamp_utc": "2026-10-18T05:06:33Z",
+          "action": "EVIDENCE_VAULT_CONSOLIDATION",
+          "actor": "Natanael (via package-evidence.sh)",
+          "source": "dfir/evidence/host/evd-host-db1-20261018-050624.tar.gz",
+          "destination": "dfir/evidence/vault_ir_2026_s06/host/evd-host-db1-20261018-050624.tar.gz",
+          "hash_verified": true,
+          "notes": "Barang bukti host triage berhasil dikonsolidasikan ke dalam vault, diverifikasi hash identik 100%, dan dikunci read-only (0440)."
+        }
+      ]
+    }
+  ]
+}

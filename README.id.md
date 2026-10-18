@@ -6,6 +6,9 @@
 [![Keamanan](https://img.shields.io/badge/Keamanan-OPNsense_SPI_+_Linux_nftables-red.svg)](#)
 [![Standar](https://img.shields.io/badge/Zero--Trust-NIST_SP_800--207-darkgreen.svg)](#)
 [![Kerangka_Kerja](https://img.shields.io/badge/Threat_Framework-MITRE_ATT%26CK-purple.svg)](#)
+[![DFIR_Standard](https://img.shields.io/badge/DFIR_Standard-ISO%2FIEC_27037:2012-blue.svg)](#)
+[![Incident_Response](https://img.shields.io/badge/Incident_Response-NIST_SP_800--61_Rev2-darkgreen.svg)](#)
+[![Host_Triage](https://img.shields.io/badge/Host_Triage-RFC_3227_Order_of_Volatility-orange.svg)](#)
 [![Lisensi](https://img.shields.io/badge/Lisensi-MIT-green.svg)](#)
 
 ---
@@ -217,7 +220,32 @@ Repositori ini melengkapi **Proyek 3 (Kubernetes Zero-Trust Security with Cilium
 
 ---
 
-## 8. Struktur Direktori Repositori & Indeks Dokumentasi
+## 8. Modul Forensik Digital & Investigasi Insiden (DFIR Framework)
+
+Laboratorium ini dilengkapi modul forensik digital kelas industri yang mematuhi standar internasional **ISO/IEC 27037:2012** (*Guidelines for identification, collection, acquisition and preservation of digital evidence*), **RFC 3227** (*Guidelines for Evidence Collection and Archiving / Order of Volatility*), dan **NIST SP 800-61 Rev 2** (*Computer Security Incident Handling Guide*).
+
+```
++----------------------------------------------------------------------------------------------------+
+|                                    DFIR INVESTIGATION WORKFLOW                                     |
++----------------------------------------------------------------------------------------------------+
+|  [Penyadapan Jaringan]       [Live Host Triage]             [Preservasi Bukti]    [Super-Timeline] |
+|  Mirroring br-sensor (secops) Order of Volatility (RFC 3227) ISO/IEC 27037 Vault  Korelasi 5 Sumber|
+|  Dual-Hash SHA256/512        Zero-Disk Contamination (RAM)  Read-Only chmod 0440  Presisi Mikrodetik|
++----------------------------------------------------------------------------------------------------+
+```
+
+### Keunggulan Kunci Modul DFIR:
+1. **Live Host Triage Kilat (MTTT < 3 Detik):** Mengumpulkan 7 tier urutan volatilitas RFC 3227 secara terotomasi via Bastion ProxyJump dalam rata-rata **2.36 detik** (10x lebih cepat dari standar industri < 30s) dengan **0 byte residu pada disk korban** (eksekusi 100% di RAM `/dev/shm`).
+2. **Preservasi Rantai Bukti Terkunci (ISO/IEC 27037):** Pengemasan otomatis ke *Evidence Vault* dengan master manifest JSON, dual hashing SHA-256 dan SHA-512, serta izin baca-saja `chmod 0440` yang terbukti menolak serangan modifikasi berkas (*Permission Denied*).
+3. **Rekonstruksi Super-Timeline Multi-Sumber:** Generator linimasa terpadu berpresisi mikrodetik UTC ISO 8601 yang mengorelasikan log lintas 5 sumber independen: *Network PCAP + Host Triage + OPNsense Firewall + Zeek NSM + OpenCanary Honeypot*.
+4. **Laporan Resmi Investigasi Insiden:**
+   - [Laporan Kasus 01: Eksfiltrasi Data Nasabah DB1 (`IR-2026-S06`)](dfir/reports/INCIDENT-REPORT-CASE-01-DB-EXFILTRATION.md) — Membuktikan secara forensik **0 record bocor ke internet** (100% dibendung kernel *nftables* dan *OPNsense*).
+   - [Laporan Kasus 02: Pergerakan Lateral & Pembajakan SSH (`IR-2026-S02`)](dfir/reports/INCIDENT-REPORT-CASE-02-LATERAL-SSH.md) — Membuktikan isolasi total penyerang di web DMZ (**0% progresi lateral**, pencegahan pembajakan soket agen via `AllowAgentForwarding no`).
+5. **Skrip Demo Wawancara DFIR 2 Menit:** [`dfir/demo/run-dfir-walkthrough.sh`](dfir/demo/run-dfir-walkthrough.sh) dan [Panduan Presentasi Teknis](docs/12-panduan-demo-wawancara-dfir.md).
+
+---
+
+## 9. Struktur Direktori Repositori & Indeks Dokumentasi
 
 ```
 dc-microseg-lab/
@@ -227,9 +255,15 @@ dc-microseg-lab/
 │   ├── compare-blast-radius.py   # Kalkulator reduksi blast radius otomatis
 │   ├── run-benchmark-overhead.py # Skrip benchmark performa iperf3
 │   └── s01-s10 attack scripts    # Skrip pengujian individual skenario S1 s/d S10
-├── demo-scripts/                 # Skrip presentasi cepat portofolio
+├── demo-scripts/                 # Skrip presentasi cepat portofolio microsegmentation
 │   └── demo-2min.sh              # Skrip demo wawancara 2 menit (interaktif/otomatis)
-├── docs/                         # Dokumentasi teknis komprehensif (Fase 0 - 9)
+├── dfir/                         # Modul Forensik Digital & Investigasi Insiden (ISO 27037)
+│   ├── acquisition/              # Skrip penangkapan pcap mentah & live host triage RFC 3227
+│   ├── analysis/                 # Stream carving, host parser, & generator super-timeline
+│   ├── demo/                     # Skrip demo interaktif 2 menit (run-dfir-walkthrough.sh)
+│   ├── evidence/                 # Evidence Vaults terisolasi (manifest, SHA256SUMS, 0440 RO)
+│   └── reports/                  # Laporan resmi investigasi insiden (NIST SP 800-61 Rev 2)
+├── docs/                         # Dokumentasi teknis komprehensif (Fase 0 - 12)
 │   ├── 00-perencanaan-dan-anggaran.md
 │   ├── 01-infrastruktur-libvirt-dan-node.md
 │   ├── 02-underlay-ebgp-dan-ecmp.md
@@ -240,6 +274,9 @@ dc-microseg-lab/
 │   ├── 07-penegakan-segmentasi.md
 │   ├── 08-ketahanan-fabric-dan-overhead.md
 │   ├── 09-laporan-pengujian-mitre-attack.md
+│   ├── 10-dfir-akuisisi-dan-preservasi-bukti.md
+│   ├── 11-dfir-analisis-post-mortem-dan-super-timeline.md
+│   ├── 12-panduan-demo-wawancara-dfir.md
 │   ├── PANDUAN-DEMO-WAWANCARA.md
 │   └── BLOG-POST-ZERO-TRUST-MICROSEGMENTATION.md
 ├── fabric/                       # Konfigurasi fabric underlay, overlay, & firewall
@@ -261,7 +298,8 @@ dc-microseg-lab/
 ---
 
 ## Lisensi & Penulis
-- **Penulis:** Lavvvet
+- **Penulis:** Natanael Simanjuntak
 - **Standar Arsitektur:** NIST SP 800-207 (Zero-Trust Architecture)
+- **Standar Forensik:** ISO/IEC 27037:2012, RFC 3227, & NIST SP 800-61 Rev 2
 - **Framework Ancaman:** MITRE ATT&CK for Enterprise
 - **Lisensi:** MIT License

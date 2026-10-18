@@ -38,6 +38,13 @@ dfir/evidence/**/*.tar.gz
 dfir/evidence/**/*.tgz
 dfir/evidence/**/*.raw
 dfir/evidence/**/*.dump
+dfir/evidence/**/parsed_*/
+dfir/evidence/**/extracted_*/
+dfir/analysis/extracted_*/
+dfir/analysis/parsed_*/
+dfir/analysis/super_timeline_*/
+dfir/evidence/host/*.meta.json
+dfir/evidence/network/*.meta.json
 !dfir/evidence/**/.gitkeep
 !dfir/evidence/manifest-template.json
 
