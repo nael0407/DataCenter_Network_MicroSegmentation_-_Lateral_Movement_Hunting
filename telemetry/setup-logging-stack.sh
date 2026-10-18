@@ -7,10 +7,8 @@ set -euo pipefail
 SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5"
 
-echo "=========================================================="
 echo "Penyebaran Stack Telemetri Sentral (Loki + Grafana + Alloy)"
 echo "Target Node: secops (192.168.122.81 / 10.10.40.11)"
-echo "=========================================================="
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 scp $SSH_OPTS "$SCRIPT_DIR/loki-grafana/microseg-dashboard.json" "dcadmin@192.168.122.81:/tmp/microseg-dashboard.json"
@@ -172,8 +170,6 @@ echo " - Grafana Alloy  : $(systemctl is-active alloy)"
 EOF
 
 echo
-echo "=========================================================="
 echo "Stack Telemetri Sentral (Loki + Grafana + Alloy) Berhasil Terpasang!"
 echo "Dashboard Grafana siap diakses di: http://192.168.122.81:3000"
 echo "Kredensial Default: admin / admin"
-echo "=========================================================="

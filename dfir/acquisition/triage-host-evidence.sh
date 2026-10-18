@@ -128,16 +128,13 @@ rm -f "${LOCAL_TAR}" "${LOCAL_META}"
 START_TIME=$(date -u +"%Y-%m-%dT%H:%M:%S.000Z")
 START_EPOCH=$(date +%s.%N)
 
-echo "=========================================================="
 echo "Memulai Live Host Triage Forensik (RFC 3227 & ISO 27037)"
-echo "=========================================================="
 echo "Target Host : ${TARGET_NAME} (${TARGET_IP})"
 echo "Case ID     : ${CASE_ID}"
 echo "Evidence ID : ${EVIDENCE_ID}"
 echo "Bastion     : ${SECOPS_IP} (ProxyJump)"
 echo "Target File : ${LOCAL_TAR}"
 echo "Waktu Mulai : ${START_TIME}"
-echo "=========================================================="
 
 # Eksekusi Triage di Target Host melalui Bastion ProxyJump
 # Triage dijalankan di /dev/shm (RAM filesystem) untuk menjaga integritas disk korban
@@ -357,9 +354,7 @@ META_EOF
 
 DURATION_FORMATTED=$(printf "%.2f" "$DURATION_SEC")
 
-echo "=========================================================="
 echo "Live Host Triage Berhasil Diamankan (ISO 27037 Compliant)"
-echo "=========================================================="
 echo "Evidence ID : ${EVIDENCE_ID}"
 echo "Source Host : ${REMOTE_HOST} (${TARGET_IP})"
 echo "Berkas Bukti: ${LOCAL_TAR}"
@@ -369,4 +364,3 @@ echo "SHA-256     : ${LOCAL_SHA256}"
 echo "Integritas  : VERIFIED MATCH (100%)"
 echo "Metadata    : ${LOCAL_META}"
 echo "Hak Akses   : Read-Only (0440)"
-echo "=========================================================="

@@ -9,9 +9,7 @@ CONF_FILE="$SCRIPT_DIR/nodes.conf"
 
 [ -f "$CONF_FILE" ] || { echo "ERROR: $CONF_FILE tidak ditemukan!"; exit 1; }
 
-echo "=========================================================="
 echo "Memeriksa dan mendaftarkan reservasi DHCP di network 'default'..."
-echo "=========================================================="
 
 CURRENT_XML="$($VIRSH net-dumpxml default)"
 

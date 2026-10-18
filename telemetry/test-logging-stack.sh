@@ -7,10 +7,8 @@ set -euo pipefail
 SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5"
 
-echo "=========================================================="
 echo "Pengujian End-to-End Stack Telemetri (Loki + Grafana + Alloy + Zeek)"
 echo "Target Node: secops (192.168.122.81 / 10.10.40.11)"
-echo "=========================================================="
 
 echo "--- 1. Memeriksa Status Layanan Telemetri di secops ---"
 ssh $SSH_OPTS "dcadmin@192.168.122.81" 'sudo bash -s' << 'EOF'
@@ -117,6 +115,4 @@ else:
 EOF
 
 echo
-echo "=========================================================="
 echo "Pengujian Stack Telemetri Selesai!"
-echo "=========================================================="

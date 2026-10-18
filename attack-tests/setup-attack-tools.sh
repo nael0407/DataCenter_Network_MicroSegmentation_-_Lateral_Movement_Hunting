@@ -8,10 +8,8 @@ SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5"
 DEB_CACHE="/tmp/nmap-debs"
 
-echo "=========================================================="
 echo "Penyiapan Perangkat Uji Serangan Lab (Langkah 6.1)"
 echo "Target Node: web1 (10.10.10.11) & attacker (203.0.113.11)"
-echo "=========================================================="
 
 # 1. Pastikan paket .deb nmap lengkap ada di host
 if [ ! -d "$DEB_CACHE" ] || [ ! -f "$DEB_CACHE/nmap-common_"* ]; then
@@ -40,6 +38,4 @@ EOF
 done
 
 echo
-echo "=========================================================="
 echo "Perangkat Uji Serangan Siap Digunakan!"
-echo "=========================================================="

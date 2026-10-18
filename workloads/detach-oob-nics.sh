@@ -9,10 +9,8 @@ VIRSH="virsh --connect qemu:///system"
 SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5"
 
-echo "=========================================================="
 echo "Penerapan Prinsip 6.5: Pelepasan Antarmuka OOB Manajemen"
 echo "Mencegah Jalur Tikus / Bypass Segmentasi Jaringan Lab"
-echo "=========================================================="
 
 TARGET_VMS=("web1" "web2" "app1" "app2" "db1" "canary1" "attacker")
 
@@ -72,10 +70,8 @@ else
 fi
 
 echo
-echo "=========================================================="
 echo "Verifikasi Bukti Negatif (Negative Reachability Proof):"
 echo "Membuktikan Tidak Ada Lagi Jalur ke Subnet Manajemen 192.168.122.0/24"
-echo "=========================================================="
 
 echo "1. Menguji konektivitas langsung dari Host ke web1 (192.168.122.41):"
 if ping -c 1 -W 1 192.168.122.41 >/dev/null 2>&1; then
@@ -94,9 +90,7 @@ if [ "$ssh_out" = "NO_ROUTE" ]; then
 fi
 
 echo
-echo "=========================================================="
 echo "Verifikasi Akses Administratif Positif via Bastion secops:"
-echo "=========================================================="
 
 INTERNAL_VMS=(
   "web1:10.10.10.11"
@@ -121,9 +115,7 @@ for item in "${INTERNAL_VMS[@]}"; do
 done
 
 echo
-echo "=========================================================="
 echo "Verifikasi Jalur Data Inter-Zona (East-West) via OPNsense:"
-echo "=========================================================="
 echo -n ">>> [web1 -> app1 (10.10.20.11 via OPNsense)]: "
 if ssh -J dcadmin@192.168.122.81 -i "$SSH_KEY" -o StrictHostKeyChecking=no dcadmin@10.10.10.11 "ping -c 2 -W 2 10.10.20.11 >/dev/null 2>&1"; then
   echo "SUCCESS (0% Loss - Stateful SPI Aktif)"
@@ -139,7 +131,5 @@ else
 fi
 
 echo
-echo "=========================================================="
 echo "Prinsip 6.5 Resmi Ditegakkan 100%!"
 echo "Isolasi Out-of-Band & Bastion ProxyJump Siap Digunakan."
-echo "=========================================================="

@@ -6,10 +6,8 @@ set -euo pipefail
 SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5"
 
-echo "=========================================================="
 echo "Pengujian OpenCanary Decoy & Pengukuran Latensi Deteksi"
 echo "Target: canary1 (10.10.50.11) | Penyelidik: web1 (10.10.10.11)"
-echo "=========================================================="
 
 echo "--- 1. Memeriksa Status Layanan OpenCanary di canary1 ---"
 status=$(ssh $SSH_OPTS dcadmin@10.10.50.11 "systemctl is-active opencanary")
@@ -107,6 +105,4 @@ else:
 EOF
 
 echo
-echo "=========================================================="
 echo "Pengujian OpenCanary Selesai (100% Lulus)!"
-echo "=========================================================="

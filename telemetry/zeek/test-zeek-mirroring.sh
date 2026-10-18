@@ -8,9 +8,7 @@ set -euo pipefail
 SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5"
 
-echo "=========================================================="
 echo "Pengujian Port Mirroring & Multi-Interface Sniffing Zeek"
-echo "=========================================================="
 
 echo "--- 1. Memeriksa Status Layanan zeek.service di secops ---"
 ssh $SSH_OPTS "dcadmin@192.168.122.81" "systemctl is-active zeek.service"
@@ -28,9 +26,7 @@ echo "--- 3. Menunggu Flushing Buffer Log Zeek (8 detik)... ---"
 sleep 8
 
 echo
-echo "=========================================================="
 echo "BAGIAN A: Verifikasi Log JSON conn.log pada Zeek di secops"
-echo "=========================================================="
 
 ssh $SSH_OPTS "dcadmin@192.168.122.81" 'sudo bash -s' << 'EOF'
 set -euo pipefail
@@ -45,9 +41,7 @@ cat /var/log/zeek/conn.log | grep "10.10.10.11" | tail -n 5
 EOF
 
 echo
-echo "=========================================================="
 echo "BAGIAN B: Pembuktian Multi-Interface Correlation & Format JSON"
-echo "=========================================================="
 
 ssh $SSH_OPTS "dcadmin@192.168.122.81" 'sudo bash -s' << 'EOF'
 set -euo pipefail
@@ -68,6 +62,4 @@ fi
 EOF
 
 echo
-echo "=========================================================="
 echo "Verifikasi Port Mirroring & Zeek Multi-Interface Sukses 100%!"
-echo "=========================================================="

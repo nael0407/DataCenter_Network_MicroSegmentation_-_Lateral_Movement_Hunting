@@ -5,9 +5,7 @@ set -euo pipefail
 
 VIRSH="virsh --connect qemu:///system"
 
-echo "=========================================================="
 echo "Mematikan Seluruh Virtual Machine Lab DC Microsegmentation"
-echo "=========================================================="
 
 # Matikan dalam urutan terbalik: workload -> opnsense -> leaf -> spine
 VMS=("attacker" "secops" "canary1" "db1" "app2" "app1" "web2" "web1" "opnsense" "leaf3" "leaf2" "leaf1" "spine2" "spine1")
@@ -40,8 +38,6 @@ for i in {1..35}; do
 done
 
 echo
-echo "=========================================================="
 echo "Status Akhir VM Lab:"
 $VIRSH list --all | grep -E "(spine|leaf|opnsense|web|app|db|canary|secops|attacker)" || true
-echo "=========================================================="
 echo "Seluruh VM berhasil dimatikan dengan aman. Laptop siap dimatikan!"

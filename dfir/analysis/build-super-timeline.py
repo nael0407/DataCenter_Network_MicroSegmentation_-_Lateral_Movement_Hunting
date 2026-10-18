@@ -387,9 +387,7 @@ class SuperTimelineEngine:
     def print_dashboard(self, json_path, csv_path):
         """Tampilkan dasbor linimasa ke terminal dengan pemformatan forensik tingkat tinggi."""
         print()
-        print(f"{BOLD}{CYAN}===================================================================================================={RESET}")
         print(f"{BOLD}{CYAN}                    SUPER-TIMELINE RECONSTRUCTION DASHBOARD (CROSS-CORRELATED)                      {RESET}")
-        print(f"{BOLD}{CYAN}===================================================================================================={RESET}")
         print(f"  ID Kasus Forensik   : {BOLD}{self.case_id}{RESET}")
         print(f"  Total Peristiwa     : {BOLD}{len(self.events)}{RESET} event (Presisi Mikrodetik UTC)")
         print(f"  Sumber Bukti Termuat:")
@@ -435,7 +433,6 @@ class SuperTimelineEngine:
         print(f"{BOLD}{GREEN}[SUCCESS] Hasil Super-Timeline Berhasil Dihasilkan:{RESET}")
         print(f"  -> JSON: {json_path}")
         print(f"  -> CSV : {csv_path}")
-        print(f"{BOLD}{CYAN}===================================================================================================={RESET}")
         print()
 
 def main():

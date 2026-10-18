@@ -8,10 +8,8 @@ SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo "=========================================================="
 echo "Penyebaran OpenCanary Honeypot Decoy (Fase 5 - Langkah 5.5)"
 echo "Target Node: canary1 (10.10.50.11 - Zona Canary / Leaf3)"
-echo "=========================================================="
 
 # 1. Pastikan bundel paket roda (wheels) siap di host
 WHEELS_DIR="/tmp/opencanary-wheels"
@@ -87,6 +85,4 @@ sudo ss -tulpn | grep twistd | awk '{print "  -> Port:", $5}'
 EOF
 
 echo
-echo "=========================================================="
 echo "OpenCanary Honeypot Decoy Berhasil Dikonfigurasi di canary1!"
-echo "=========================================================="

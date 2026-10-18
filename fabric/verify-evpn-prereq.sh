@@ -5,9 +5,7 @@ set -euo pipefail
 
 SSH_KEY="$HOME/.ssh/k8s-lab"
 
-echo "=========================================================="
 echo "Verifikasi Prasyarat EVPN/VXLAN Bridged Overlay di 5 Node"
-echo "=========================================================="
 
 NODES=(
   "spine1:192.168.122.21:spine"

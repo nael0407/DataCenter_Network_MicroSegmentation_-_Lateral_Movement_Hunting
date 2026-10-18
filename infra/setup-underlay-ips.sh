@@ -5,9 +5,7 @@ set -euo pipefail
 
 SSH_KEY="$HOME/.ssh/k8s-lab"
 
-echo "=========================================================="
 echo "Menerapkan konfigurasi IP Underlay & MTU 9000 pada 5 node..."
-echo "=========================================================="
 
 # 1. Konfigurasi spine1
 echo "[spine1] Menerapkan IP Loopback & P2P /31..."
@@ -143,9 +141,7 @@ netplan apply
 EOF
 
 echo
-echo "=========================================================="
 echo "Pengujian Ping Tetangga P2P & Uji Jumbo Frame (MTU 9000):"
-echo "=========================================================="
 
 TESTS=(
   # node_asal:ip_node:ip_target:nama_link

@@ -5,9 +5,7 @@ set -euo pipefail
 
 SSH_KEY="$HOME/.ssh/k8s-lab"
 
-echo "=========================================================="
 echo "Menerapkan Konfigurasi BFD pada BGP Neighbors di 5 Node"
-echo "=========================================================="
 
 # 1. spine1 (3 neighbors)
 echo "--- [spine1 (192.168.122.21)] Mengaktifkan BFD untuk leaf1, leaf2, leaf3 ---"
@@ -209,9 +207,7 @@ echo "Menunggu stabilisasi sesi BFD (4 detik)..."
 sleep 4
 
 echo
-echo "=========================================================="
 echo "Verifikasi Sesi BFD (show bfd peers brief) di 5 Node:"
-echo "=========================================================="
 
 NODES=(
   "spine1:192.168.122.21"
@@ -228,9 +224,7 @@ for item in "${NODES[@]}"; do
   echo
 done
 
-echo "=========================================================="
 echo "PENGUJIAN DETEKSI KEGAGALAN LINK (LINK FAILURE TEST):"
-echo "=========================================================="
 echo "1. Kondisi Awal: Tabel rute BGP di leaf1 menuju loopback leaf2 (10.255.0.12):"
 ssh -i "$SSH_KEY" -o ConnectTimeout=5 "dcadmin@192.168.122.31" "vtysh -c 'show ip route 10.255.0.12'"
 

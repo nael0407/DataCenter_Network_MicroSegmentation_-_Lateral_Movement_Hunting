@@ -7,10 +7,8 @@ set -euo pipefail
 SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5"
 
-echo "=========================================================="
 echo "Konfigurasi Zeek Multi-Interface Sniffing & JSON Logging"
 echo "Target Node: secops (192.168.122.81)"
-echo "=========================================================="
 
 ssh $SSH_OPTS "dcadmin@192.168.122.81" 'sudo bash -s' << 'EOF'
 set -euo pipefail
@@ -69,6 +67,4 @@ fi
 EOF
 
 echo
-echo "=========================================================="
 echo "Zeek Multi-Interface Sniffing Berhasil Dikonfigurasi!"
-echo "=========================================================="

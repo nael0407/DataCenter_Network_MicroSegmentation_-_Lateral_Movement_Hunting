@@ -12,9 +12,7 @@ VIRSH="virsh --connect qemu:///system"
 
 WORKLOADS=("web1" "web2" "app1" "app2" "db1" "canary1" "secops" "attacker")
 
-echo "=========================================================="
 echo "Penyebaran VM Workload, Sensor, & Attacker (8 Node - Fase 5)"
-echo "=========================================================="
 
 # 1. Pembuatan VM menggunakan create-vm.sh
 for vm in "${WORKLOADS[@]}"; do
@@ -57,9 +55,7 @@ for entry in "${IP_MAP[@]}"; do
 done
 
 echo
-echo "=========================================================="
 echo "Menerapkan Konfigurasi Jaringan Netplan Data-Plane (60-data.yaml)"
-echo "=========================================================="
 
 apply_netplan() {
   local ip="$1"
@@ -210,9 +206,7 @@ apply_netplan "192.168.122.91" 'network:
         addresses: [1.1.1.1, 8.8.8.8]'
 
 echo
-echo "=========================================================="
 echo "Verifikasi Keterjangkauan Gateway OPNsense dari Tiap Workload:"
-echo "=========================================================="
 
 test_gw_ping() {
   local vm="$1"
@@ -236,9 +230,7 @@ test_gw_ping "secops"  "192.168.122.81" "10.10.40.1"
 test_gw_ping "attacker" "192.168.122.91" "203.0.113.1"
 
 echo
-echo "=========================================================="
 echo "Verifikasi Konektivitas Intra-Zona & Inter-Zona:"
-echo "=========================================================="
 echo -n ">>> [Intra-Zone Web: web1 -> web2 (10.10.10.12)]: "
 if ssh $SSH_OPTS "dcadmin@192.168.122.41" "ping -c 2 -W 2 10.10.10.12 >/dev/null 2>&1"; then
   echo "SUCCESS (L2 Bridge Lokal Leaf1)"
@@ -268,6 +260,4 @@ else
 fi
 
 echo
-echo "=========================================================="
 echo "Seluruh 8 VM Workload Berhasil Dideploy & Terverifikasi!"
-echo "=========================================================="

@@ -7,10 +7,8 @@ set -euo pipefail
 SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=4"
 
-echo "=========================================================="
 echo "Verifikasi Penegakan Micro-segmentation OPNsense (Langkah 7.1)"
 echo "Mode: DEFAULT-DENY DENGAN IZIN EKSPLISIT BERBASIS ZONA"
-echo "=========================================================="
 
 echo
 echo "--- [BAGIAN 1] Pengujian Aliran Positif yang Sah (Expected: PASS) ---"
@@ -94,6 +92,4 @@ else
 fi
 
 echo
-echo "=========================================================="
 echo "Verifikasi Selesai!"
-echo "=========================================================="

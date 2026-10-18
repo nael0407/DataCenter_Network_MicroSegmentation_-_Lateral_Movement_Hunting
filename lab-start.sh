@@ -5,9 +5,7 @@ set -euo pipefail
 
 VIRSH="virsh --connect qemu:///system"
 
-echo "=========================================================="
 echo "Menyalakan Seluruh Virtual Machine Lab DC Microsegmentation"
-echo "=========================================================="
 
 # Daftar VM berdasarkan urutan dependensi
 VMS=("spine1" "spine2" "leaf1" "leaf2" "leaf3" "opnsense" "web1" "web2" "app1" "app2" "db1" "canary1" "secops" "attacker")
@@ -47,8 +45,6 @@ if ssh $SSH_OPTS "dcadmin@192.168.122.81" "sudo /usr/local/bin/setup-sensor-brid
 fi
 
 echo
-echo "=========================================================="
 echo "Status Seluruh VM Lab Saat Ini:"
 $VIRSH list --all | grep -E "(spine|leaf|opnsense|web|app|db|canary|secops|attacker)" || true
-echo "=========================================================="
 echo "Lab siap digunakan!"

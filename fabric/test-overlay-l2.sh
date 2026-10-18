@@ -6,9 +6,7 @@ set -euo pipefail
 
 SSH_KEY="$HOME/.ssh/k8s-lab"
 
-echo "=========================================================="
 echo "Pengujian Konektivitas L2 EVPN/VXLAN Overlay Lintas Leaf"
-echo "=========================================================="
 
 # -----------------------------------------------------------------------------
 # PENGUJIAN 1: Zona Web (VNI 10010) antara leaf1 dan leaf3
@@ -112,7 +110,5 @@ ssh -i "$SSH_KEY" "dcadmin@192.168.122.32" "sudo ip netns del host-app-l2 2>/dev
 ssh -i "$SSH_KEY" "dcadmin@192.168.122.33" "sudo ip netns del host-app-l3 2>/dev/null && sudo ip link del dev veth-a3 2>/dev/null || true"
 
 echo
-echo "=========================================================="
 echo "Seluruh Pengujian Ping L2 Overlay & MTU VXLAN Lulus 100%!"
 echo "Host uji sementara berhasil dibersihkan dari seluruh node."
-echo "=========================================================="

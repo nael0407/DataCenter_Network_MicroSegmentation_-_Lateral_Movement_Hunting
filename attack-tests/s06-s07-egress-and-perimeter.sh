@@ -10,11 +10,9 @@ SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5"
 OUTPUT_FILE="attack-tests/results-s06-s07-baseline.txt"
 
-echo "=========================================================="
 echo "Skenario S6 & S7: Data Exfiltration & External Perimeter"
 echo "Mode: BASELINE PERMISIF (Sebelum Pengerasan Microsegmentation)"
 echo "Pemetaan MITRE: T1041 / T1048 (Exfiltration) & Perimeter Access"
-echo "=========================================================="
 
 START_TS=$(date +%s.%N)
 
@@ -231,7 +229,5 @@ $S7_RESULTS
 EOF
 
 echo
-echo "=========================================================="
 echo "Skenario S6 & S7 Selesai dieksekusi!"
 echo "Hasil ringkasan tersimpan di: $OUTPUT_FILE"
-echo "=========================================================="

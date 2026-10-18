@@ -25,11 +25,9 @@ def run_ssh(host, cmd):
     return res.returncode, res.stdout, res.stderr
 
 def run_benchmarks():
-    print("==========================================================")
     print("Pengukuran Dampak Performa & Throughput Overhead (Langkah 8.4)")
     print("Pembanding : Intra-Zone L2 (Tanpa Firewall) vs Inter-Zone L3 (OPNsense SPI)")
     print("Node Uji   : web1 (Klien) | web2 (Server Intra) | app2 (Server Inter)")
-    print("==========================================================")
 
     # ==========================================================
     # 1. PENGUKURAN INTRA-ZONE L2 (web1 <-> web2, Port 5201)
@@ -113,16 +111,13 @@ def run_benchmarks():
     throughput_overhead_pct = ((intra_data["gbps_sent"] - inter_data["gbps_sent"]) / intra_data["gbps_sent"]) * 100
     latency_delta_ms = inter_data["mean_rtt_ms"] - intra_data["mean_rtt_ms"]
 
-    print("\n==========================================================")
     print("ANALISIS BIAYA KEAMANAN (SECURITY OVERHEAD ANALYSIS)")
-    print("==========================================================")
     print(f"- Throughput Intra-Zone L2 (Tanpa FW)     : {intra_data['gbps_sent']:.2f} Gbps")
     print(f"- Throughput Inter-Zone L3 (OPNsense SPI) : {inter_data['gbps_sent']:.2f} Gbps")
     print(f"- Throughput Overhead                     : {throughput_overhead_pct:.2f}%")
     print(f"- Latensi TCP RTT Intra-Zone              : {intra_data['mean_rtt_ms']:.3f} ms")
     print(f"- Latensi TCP RTT Inter-Zone              : {inter_data['mean_rtt_ms']:.3f} ms")
     print(f"- Penambahan Latensi Firewall (SPI Cost)  : +{latency_delta_ms:.3f} ms")
-    print("==========================================================")
 
     # ==========================================================
     # 4. SIMPAN LAPORAN KE ARTEFAK

@@ -11,9 +11,7 @@ LEAF1_IP="192.168.122.31"
 LEAF2_IP="192.168.122.32"
 LEAF3_IP="192.168.122.33"
 
-echo "=========================================================="
 echo "Verifikasi Keterjangkauan Gateway OPNsense dari Fabric"
-echo "=========================================================="
 
 # 1. Uji Ping dari Border Leaf (leaf3) ke seluruh 5 Gateway VLAN
 echo "--- [BAGIAN 1] Uji Keterjangkauan Gateway Langsung dari leaf3 (Trunk 802.1Q) ---"
@@ -116,6 +114,4 @@ ip link del "veth-br" 2>/dev/null || true
 EOF
 
 echo
-echo "=========================================================="
 echo "Pengujian Verifikasi Gateway Selesai!"
-echo "=========================================================="

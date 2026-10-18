@@ -8,10 +8,8 @@ SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=3"
 BASTION="192.168.122.81"
 
-echo "=========================================================="
 echo "Verifikasi Pengerasan SSH Daemon (sshd_config Hardening)"
 echo "Mitigasi MITRE: T1563.001 (Agent Hijacking) & T1572 (Tunneling)"
-echo "=========================================================="
 
 echo
 echo "--- [BAGIAN 1] Audit Parameter Efektif sshd pada Seluruh Workload ---"
@@ -68,6 +66,4 @@ else
 fi
 
 echo
-echo "=========================================================="
 echo "Verifikasi Pengerasan SSH Daemon Selesai!"
-echo "=========================================================="

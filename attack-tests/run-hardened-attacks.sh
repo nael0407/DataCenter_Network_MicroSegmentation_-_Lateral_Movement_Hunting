@@ -4,10 +4,8 @@
 # Menjalankan S1, S2, S3, S4, S5, S6, S7 dalam kondisi hardened dan mengkalkulasi komparasi blast radius.
 set -euo pipefail
 
-echo "=========================================================="
 echo "  PENGUJIAN KOMPREHENSIF SKENARIO SERANGAN PASCA-PENGUATAN"
 echo "  FASE 7.4: RE-RUN ATTACK SCENARIOS & BLAST RADIUS METRICS"
-echo "=========================================================="
 echo "Tanggal Eksekusi: $(date '+%Y-%m-%d %H:%M:%S')"
 echo
 
@@ -41,7 +39,5 @@ echo ">>> Menghasilkan Laporan Komparasi Blast Radius Kuantitatif..."
 python3 attack-tests/compare-blast-radius.py
 echo
 
-echo "=========================================================="
 echo "  SELURUH PENGUJIAN SKENARIO HARDENED SELESAI DIEKSEKUSI!"
 echo "  Semua artefak tersimpan di direktori: attack-tests/"
-echo "=========================================================="

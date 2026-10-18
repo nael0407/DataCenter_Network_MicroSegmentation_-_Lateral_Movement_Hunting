@@ -10,11 +10,9 @@ SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5"
 OUTPUT_FILE="attack-tests/results-s06-s07-hardened.txt"
 
-echo "=========================================================="
 echo "Skenario S6 & S7: Data Exfiltration & External Perimeter"
 echo "Mode: HARDENED / POST-HARDENING (Microsegmentation Enforced)"
 echo "Pemetaan MITRE: T1041 / T1048 (Exfiltration) & Perimeter Access"
-echo "=========================================================="
 
 START_TS=$(date +%s.%N)
 
@@ -194,7 +192,5 @@ else:
 EOF
 
 echo
-echo "=========================================================="
 echo "Skenario S6 & S7 (Hardened) Selesai dieksekusi!"
 echo "Hasil tersimpan di: $OUTPUT_FILE"
-echo "=========================================================="

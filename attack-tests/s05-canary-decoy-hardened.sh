@@ -9,11 +9,9 @@ SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5"
 OUTPUT_FILE="attack-tests/results-s05-hardened.txt"
 
-echo "=========================================================="
 echo "Skenario S5: Pengujian Decoy OpenCanary & Isolasi Honeypot"
 echo "Mode: HARDENED / POST-HARDENING (Microsegmentation Enforced)"
 echo "Target: canary1 (10.10.50.11) | Sumber Uji: web1 (10.10.10.11)"
-echo "=========================================================="
 
 echo "--- 1. Memeriksa Status Layanan OpenCanary di canary1 ---"
 status=$(ssh $SSH_OPTS dcadmin@10.10.50.11 "systemctl is-active opencanary")
@@ -69,7 +67,5 @@ Honeypot  : canary1 (10.10.50.11)
 EOF
 
 echo
-echo "=========================================================="
 echo "Skenario S5 (Hardened) Selesai dieksekusi!"
 echo "Hasil tersimpan di: $OUTPUT_FILE"
-echo "=========================================================="

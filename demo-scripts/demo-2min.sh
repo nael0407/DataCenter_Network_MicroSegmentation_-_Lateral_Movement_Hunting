@@ -40,10 +40,8 @@ pause_step() {
 }
 
 clear || true
-echo -e "${BOLD}${CYAN}======================================================================${RESET}"
 echo -e "${BOLD}${CYAN}  LIVE DEMO 2 MENIT: ZERO-TRUST DATA CENTER MICRO-SEGMENTATION LAB    ${RESET}"
 echo -e "${BOLD}${CYAN}  Spine-Leaf EVPN/VXLAN Fabric, OPNsense SPI, & Threat Hunting Stack  ${RESET}"
-echo -e "${BOLD}${CYAN}======================================================================${RESET}"
 echo -e "Waktu Mulai: $(date '+%Y-%m-%d %H:%M:%S')"
 echo -e "Arsitektur : 2 Spines, 3 Leaves (FRR EVPN), OPNsense FW, 8 Workloads/Sensors"
 echo
@@ -153,12 +151,9 @@ canary_stat=$(ssh $SSH_OPTS dcadmin@10.10.50.11 "systemctl is-active opencanary"
 echo -e "      Layanan OpenCanary di canary1 (10.10.50.11): ${BOLD}${GREEN}$canary_stat (Listening on 2222, 3306, 6379, 8080)${RESET}"
 
 echo
-echo -e "${BOLD}${GREEN}======================================================================${RESET}"
 echo -e "${BOLD}${GREEN}      DEMO 2 MENIT SELESAI: 100% KONTROL TERVERIFIKASI BERHASIL!      ${RESET}"
-echo -e "${BOLD}${GREEN}======================================================================${RESET}"
 echo -e "Metrik Utama yang Terbukti:"
 echo -e "  1. Reduksi Blast Radius: ${BOLD}85.71%${RESET} (DB & Decoy terlindungi total)"
 echo -e "  2. Pembelokan Lateral SSH & Egress: ${BOLD}100% Diblokir${RESET}"
 echo -e "  3. Waktu Konvergensi Failover Fabric: ${BOLD}< 100 ms${RESET} (0% packet loss)"
 echo -e "  4. Kelangsungan Aplikasi Sah 3-Tier: ${BOLD}Zero Disruption (HTTP 200 OK)${RESET}"
-echo -e "======================================================================\n"

@@ -41,9 +41,7 @@ def main():
     vault_name = args.output_vault or f"vault_{args.case_id.lower().replace('-', '_')}"
     vault_dir = os.path.join(base_evidence_dir, vault_name)
 
-    print("=" * 80)
     print("  KONSOLIDASI BARANG BUKTI DIGITAL & CHAIN OF CUSTODY (ISO/IEC 27037:2012)")
-    print("=" * 80)
     print(f"Case ID      : {args.case_id}")
     print(f"Case Name    : {args.case_name}")
     print(f"Investigator : {args.investigator} ({args.role})")
@@ -227,7 +225,6 @@ def main():
     print(f"- Checksums SHA-256      : {sha256_path} (0440 read-only)")
     print(f"- Checksums SHA-512      : {sha512_path} (0440 read-only)")
     print(f"- Vault Directory        : {vault_dir}")
-    print("=" * 80)
 
 if __name__ == "__main__":
     main()

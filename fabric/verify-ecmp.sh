@@ -6,9 +6,7 @@ set -euo pipefail
 
 SSH_KEY="$HOME/.ssh/k8s-lab"
 
-echo "=========================================================="
 echo "Verifikasi ECMP (Equal-Cost Multi-Path) di Fabric"
-echo "=========================================================="
 
 # 1. Konfigurasi sysctl L4 Multipath Hash Policy di kelima node
 echo "--- Mengaktifkan net.ipv4.fib_multipath_hash_policy=1 di 5 node ---"
@@ -51,9 +49,7 @@ done
 echo "Utilitas traceroute siap digunakan di seluruh leaf."
 
 echo
-echo "=========================================================="
 echo "BAGIAN A: Verifikasi Tabel Routing Kernel Linux (FIB Multipath)"
-echo "=========================================================="
 echo ">>> [leaf1] Rute ke leaf2 (10.255.0.12) & leaf3 (10.255.0.13):"
 ssh -i "$SSH_KEY" "dcadmin@192.168.122.31" "ip route show 10.255.0.12 && ip route show 10.255.0.13"
 
@@ -66,9 +62,7 @@ echo ">>> [leaf3] Rute ke leaf1 (10.255.0.11) & leaf2 (10.255.0.12):"
 ssh -i "$SSH_KEY" "dcadmin@192.168.122.33" "ip route show 10.255.0.11 && ip route show 10.255.0.12"
 
 echo
-echo "=========================================================="
 echo "BAGIAN B: Traceroute Melintasi Spine Layer (Spine Transit Proof)"
-echo "=========================================================="
 echo ">>> Traceroute: leaf1 (10.255.0.11) -> leaf2 (10.255.0.12):"
 ssh -i "$SSH_KEY" "dcadmin@192.168.122.31" "traceroute -s 10.255.0.11 -n 10.255.0.12"
 
@@ -85,9 +79,7 @@ echo ">>> Traceroute: leaf3 (10.255.0.13) -> leaf1 (10.255.0.11):"
 ssh -i "$SSH_KEY" "dcadmin@192.168.122.33" "traceroute -s 10.255.0.13 -n 10.255.0.11"
 
 echo
-echo "=========================================================="
 echo "BAGIAN C: Pembuktian Distribusi Beban L4 ECMP (VXLAN UDP 4789)"
-echo "=========================================================="
 echo "Simulasi 10 alur trafik dari leaf1 ke leaf2 dengan variasi Source Port UDP:"
 ssh -i "$SSH_KEY" "dcadmin@192.168.122.31" bash << 'EOF'
 for sport in $(seq 10001 10010); do
@@ -99,9 +91,7 @@ done
 EOF
 
 echo
-echo "=========================================================="
 echo "BAGIAN D: Matriks Pengujian Ping Full-Mesh Antar-Loopback"
-echo "=========================================================="
 echo -n "[TEST PING] leaf1 -> leaf2 (10.255.0.12): "
 ssh -i "$SSH_KEY" "dcadmin@192.168.122.31" "ping -c 2 -I 10.255.0.11 10.255.0.12 >/dev/null && echo 'OK (100% Reachable)' || echo 'FAIL'"
 

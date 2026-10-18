@@ -10,11 +10,9 @@ SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTim
 OUTPUT_FILE="attack-tests/results-s03-s04-hardened.txt"
 KEY_FILE="/tmp/compromised_id_ed25519"
 
-echo "=========================================================="
 echo "Skenario S3 & S4: SSH Agent Hijacking & Protocol Tunneling"
 echo "Mode: HARDENED / POST-HARDENING (SSH Hardened + Microsegmentation)"
 echo "Pemetaan MITRE: T1563.001 (Agent Hijacking) & T1572 (Tunneling)"
-echo "=========================================================="
 
 START_TS=$(date +%s.%N)
 
@@ -99,7 +97,5 @@ echo
 echo "--- 3. Verifikasi Log Perlindungan SSH & Segmentasi ---"
 echo "  [OK] sshd parameter: AllowAgentForwarding no & AllowTcpForwarding no aktif 100%."
 echo
-echo "=========================================================="
 echo "Skenario S3 & S4 (Hardened) Selesai dieksekusi!"
 echo "Hasil tersimpan di: $OUTPUT_FILE"
-echo "=========================================================="

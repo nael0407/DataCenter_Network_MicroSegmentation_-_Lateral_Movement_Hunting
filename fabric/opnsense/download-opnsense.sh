@@ -20,10 +20,8 @@ MIRRORS=(
 
 mkdir -p "$TARGET_DIR"
 
-echo "=========================================================="
 echo "Pengunduhan & Verifikasi Citra OPNsense ${OPNSENSE_VER} (DVD ISO)"
 echo "Target Direktori: $TARGET_DIR"
-echo "=========================================================="
 
 # 1. Unduh berkas checksum resmi
 cd "$TARGET_DIR"
@@ -92,7 +90,5 @@ echo "--- Mengekstrak $BZ2_NAME menggunakan bunzip2 ---"
 bunzip2 -k -f "$BZ2_NAME"
 
 echo
-echo "=========================================================="
 echo "Citra OPNsense Siap Digunakan:"
 ls -lh "$ISO_NAME"
-echo "=========================================================="

@@ -13,9 +13,7 @@ NODES=(
   "leaf3:192.168.122.33"
 )
 
-echo "=========================================================="
 echo "Mengonfigurasi kernel pada 5 node jaringan (Spine & Leaf)..."
-echo "=========================================================="
 
 for item in "${NODES[@]}"; do
   IFS=':' read -r name ip <<< "$item"
@@ -77,9 +75,7 @@ EOF
 done
 
 echo
-echo "=========================================================="
 echo "Memverifikasi hasil konfigurasi kernel di seluruh node:"
-echo "=========================================================="
 
 for item in "${NODES[@]}"; do
   IFS=':' read -r name ip <<< "$item"

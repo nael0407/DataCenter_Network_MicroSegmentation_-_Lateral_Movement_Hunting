@@ -599,9 +599,7 @@ class PcapArtifactExtractor:
     def print_summary(self, report_path):
         """Menampilkan dasbor ringkasan forensik ke terminal."""
         print()
-        print(f"{BOLD}{CYAN}======================================================================{RESET}")
         print(f"{BOLD}{CYAN}        HASIL ANALISIS ARTEFAK JARINGAN & STREAM CARVING (PCAP)       {RESET}")
-        print(f"{BOLD}{CYAN}======================================================================{RESET}")
         print(f"  Berkas PCAP Target : {self.pcap_path}")
         print(f"  ID Kasus Investigasi: {self.case_id}")
         print(f"  Total Paket Dianalisis: {BOLD}{self.packets_count}{RESET} frame")
@@ -643,7 +641,6 @@ class PcapArtifactExtractor:
 
         print(f"{BOLD}{GREEN}[SUCCESS] Laporan analisis tersimpan di:{RESET}")
         print(f"  -> {report_path}")
-        print(f"{BOLD}{CYAN}======================================================================{RESET}")
         print()
 
 def main():

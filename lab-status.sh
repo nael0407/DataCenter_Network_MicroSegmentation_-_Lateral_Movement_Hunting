@@ -5,9 +5,7 @@ set -euo pipefail
 
 VIRSH="virsh --connect qemu:///system"
 
-echo "=========================================================="
 echo "Kesehatan Infrastruktur Lab DC Microsegmentation"
-echo "=========================================================="
 
 echo "--- 1. Status Domain VM di Libvirt ---"
 $VIRSH list --all | grep -E "(spine|leaf|opnsense|web|app|db|canary|secops|attacker)" || true
@@ -29,4 +27,3 @@ else
   echo "[INFO] VM 'opnsense' sedang mati (shut off)."
 fi
 
-echo "=========================================================="

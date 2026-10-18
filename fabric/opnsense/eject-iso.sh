@@ -6,9 +6,7 @@ set -euo pipefail
 VIRSH="virsh --connect qemu:///system"
 NAME="opnsense"
 
-echo "=========================================================="
 echo "Melepas Media ISO dari VM: $NAME"
-echo "=========================================================="
 
 TARGET_DEV=$($VIRSH domblklist "$NAME" | grep -i "\.iso" | awk '{print $1}' || true)
 
@@ -22,4 +20,3 @@ fi
 
 echo "Status blok disk saat ini:"
 $VIRSH domblklist "$NAME"
-echo "=========================================================="

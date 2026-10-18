@@ -139,9 +139,7 @@ def main():
     repo_root = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
     base_evidence_dir = args.evidence_dir or os.path.join(repo_root, "dfir", "evidence")
 
-    print("=" * 80)
     print("  VERIFIKASI INTEGRITAS BUKTI DIGITAL FORENSIK (ISO/IEC 27037:2012)")
-    print("=" * 80)
 
     vaults_to_check = []
     if args.vault:
@@ -175,7 +173,6 @@ def main():
 
     integrity_rate = (passed_items / total_items * 100.0) if total_items > 0 else 100.0
 
-    print("\n" + "=" * 80)
     print("RINGKASAN HASIL AUDIT INTEGRITAS FORENSIK:")
     print(f"- Total Item Bukti Diperiksa : {total_items}")
     print(f"- Item Bukti Lolos Verifikasi: {passed_items}")
@@ -184,7 +181,6 @@ def main():
         print("- Status Keseluruhan          : 100% GREEN (ZERO TAMPERING / ISO 27037 COMPLIANT)")
     else:
         print("- Status Keseluruhan          : RED / INTEGRITY VIOLATION DETECTED")
-    print("=" * 80)
 
     sys.exit(0 if all_passed else 1)
 

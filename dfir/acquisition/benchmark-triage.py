@@ -23,9 +23,7 @@ RESULTS_FILE = os.path.abspath(os.path.join(os.path.dirname(__file__), "results-
 VAULT_HOST_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../evidence/host"))
 
 def run_benchmark():
-    print("=" * 80)
     print("  BENCHMARKING MEAN TIME TO TRIAGE (MTTT) & INTEGRITY (RFC 3227 & ISO 27037)")
-    print("=" * 80)
     print(f"Target Threshold : MTTT < 30.00 detik | Integrity Rate: 100.0%\n")
 
     results = []
@@ -93,7 +91,6 @@ def run_benchmark():
 
         print(f" [DONE: {duration:.2f}s | {file_size/1024:.1f} KB | Integrity: 100%]")
 
-    print("\n" + "=" * 80)
     print(f"{'TARGET':<10} | {'IP ADDRESS':<14} | {'TIER':<18} | {'DURASI':<10} | {'UKURAN':<10} | {'INTEGRITAS'}")
     print("-" * 80)
 

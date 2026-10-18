@@ -7,9 +7,7 @@ set -euo pipefail
 SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5"
 
-echo "=========================================================="
 echo "Konfigurasi Port Mirroring (tc mirred) & Sensor Telemetri"
-echo "=========================================================="
 
 # 1. Konfigurasi Port Mirroring di Leaf1 (Web Zone: eth3 -> mirror-l1: eth4)
 echo "--- [1/4] Mengonfigurasi tc mirred di leaf1 (eth3 -> eth4) ---"
@@ -141,6 +139,4 @@ echo "[OK] secops br-sensor (menggabungkan eth1, eth2, eth3 nolearning) aktif & 
 EOF
 
 echo
-echo "=========================================================="
 echo "Seluruh Port Mirroring & Sensor Interface Berhasil Dikonfigurasi!"
-echo "=========================================================="

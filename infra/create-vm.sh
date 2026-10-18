@@ -43,7 +43,6 @@ echo "Disk       : ${DISK_GB} GB (Overlay qcow2)"
 echo "Mgmt IP    : $MGMT_IP"
 echo "Mgmt MAC   : $MGMT_MAC (network: default)"
 echo "Extra NICs : $ADDITIONAL_NICS"
-echo "========================================="
 
 # 2. Pemeriksaan awal: pastikan VM dan disk belum ada
 if $VIRSH dominfo "$NAME" >/dev/null 2>&1; then

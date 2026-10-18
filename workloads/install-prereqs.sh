@@ -6,9 +6,7 @@ set -euo pipefail
 SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5"
 
-echo "=========================================================="
 echo "Instalasi Paket Prasyarat Workload & Sensor (Langkah 5.2)"
-echo "=========================================================="
 
 install_pkgs() {
   local vm="$1"
@@ -45,6 +43,4 @@ CANARY_PKGS="traceroute iperf3 python3-pip python3-venv build-essential libssl-d
 install_pkgs "canary1" "192.168.122.71" "$CANARY_PKGS"
 
 echo
-echo "=========================================================="
 echo "Seluruh Paket Prasyarat Berhasil Terpasang di Seluruh Node!"
-echo "=========================================================="

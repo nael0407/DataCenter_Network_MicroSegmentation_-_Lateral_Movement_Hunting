@@ -8,11 +8,9 @@ SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5"
 OUTPUT_FILE="telemetry/hunting/results-hunting-baseline.txt"
 
-echo "=========================================================="
 echo "Skenario S8: Threat Hunting & Graph-based Baseline"
 echo "Mode: BASELINE PERMISIF (Deteksi Telemetri Zeek + Loki)"
 echo "Target Node: secops (192.168.122.81 / 10.10.40.11)"
-echo "=========================================================="
 
 # Sinkronkan skrip analisis graf ke secops
 scp $SSH_OPTS telemetry/hunting/build-traffic-graph.py dcadmin@192.168.122.81:/tmp/build-traffic-graph.py
@@ -116,7 +114,5 @@ $HUNTING_REPORT
 EOF
 
 echo
-echo "=========================================================="
 echo "Threat Hunting & Graph Baseline Selesai!"
 echo "Hasil ringkasan tersimpan di: $OUTPUT_FILE"
-echo "=========================================================="

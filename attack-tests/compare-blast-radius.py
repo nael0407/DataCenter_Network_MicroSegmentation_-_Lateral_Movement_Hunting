@@ -189,9 +189,7 @@ def generate_comparison_report():
         
     print(f"[OK] Laporan komparasi kuantitatif tersimpan di: {report_file}")
     print()
-    print("==========================================================")
     print("RINGKASAN METRIK KUANTITATIF (BASELINE VS HARDENED)")
-    print("==========================================================")
     print(f"- Total Layanan Terbuka Terdeteksi dari Web DMZ:")
     print(f"  * Baseline : {baseline_open_total} layanan")
     print(f"  * Hardened : {hardened_open_total} layanan (hanya App: 8080)")
@@ -202,7 +200,6 @@ def generate_comparison_report():
     print(f"- Keberhasilan Lateral SSH (S2)      : 0/3 (Diblokir Total) [LULUS]")
     print(f"- Keberhasilan Eksfiltrasi DB (S6)   : 0 records (Diblokir Total) [LULUS]")
     print(f"- Trafik Sah 3-Tier (North-South)   : 200 OK (Tidak Terganggu) [LULUS]")
-    print("==========================================================")
 
 if __name__ == "__main__":
     generate_comparison_report()

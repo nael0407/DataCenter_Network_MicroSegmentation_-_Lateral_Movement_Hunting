@@ -11,10 +11,8 @@ SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no"
 LEAF1_IP="192.168.122.31"
 LEAF2_IP="192.168.122.32"
 
-echo "=========================================================="
 echo "Pengujian Perutean Inter-Zona Melintasi OPNsense Firewall"
 echo "Topologi: leaf1 (Web: 10.10.10.91) <-> OPNsense <-> leaf2 (App: 10.10.20.92)"
-echo "=========================================================="
 
 # Trap pembersihan darurat jika skrip terhenti di tengah jalan
 cleanup() {
@@ -72,23 +70,17 @@ ip netns exec "$ns" ping -c 1 -W 2 10.10.10.1 >/dev/null 2>&1 || true
 echo "[OK] Host ns-web-l1 siap di leaf1 (IP: 10.10.10.91, Default GW: 10.10.10.1)"
 
 echo
-echo "=========================================================="
 echo "BAGIAN A: Uji Ping Inter-Zona (Web: 10.10.10.91 -> App: 10.10.20.92)"
-echo "=========================================================="
 echo "Melintasi: VXLAN 10010 (leaf1 -> leaf3) -> OPNsense SPI (Web -> App) -> VXLAN 10020 (leaf3 -> leaf2)"
 ip netns exec "$ns" ping -c 4 -W 2 10.10.20.92
 
 echo
-echo "=========================================================="
 echo "BAGIAN B: Uji Traceroute Inter-Zona (Pembuktian Hop OPNsense)"
-echo "=========================================================="
 echo "Hop 1 harus berupa Gateway OPNsense (10.10.10.1) dan Hop 2 adalah target (10.10.20.92):"
 ip netns exec "$ns" traceroute -n -N 1 -w 2 10.10.20.92
 
 echo
-echo "=========================================================="
 echo "BAGIAN C: Uji Frame Penuh MTU 1500 DF=1 (Don't Fragment)"
-echo "=========================================================="
 echo "Payload 1472 byte + 28 byte Header IP/ICMP = 1500 byte tanpa fragmentasi:"
 ip netns exec "$ns" ping -c 3 -M do -s 1472 -W 2 10.10.20.92
 EOF
@@ -107,6 +99,4 @@ ip link del "veth-br-a2" 2>/dev/null || true
 EOF
 
 echo "[OK] Lingkungan pengujian dibersihkan secara bersih."
-echo "=========================================================="
 echo "Pengujian Perutean Inter-Zona Selesai!"
-echo "=========================================================="

@@ -11,9 +11,7 @@ DISK="$POOL_DIR/opnsense.qcow2"
 NAME="opnsense"
 VIRSH="virsh --connect qemu:///system"
 
-echo "=========================================================="
 echo "Pembuatan Virtual Machine: $NAME (OPNsense 24.7)"
-echo "=========================================================="
 
 # 1. Validasi prasyarat berkas ISO
 if [ ! -f "$ISO_SOURCE" ] && [ ! -f "$ISO_DEST" ]; then
@@ -68,9 +66,7 @@ virt-install --connect qemu:///system \
   --noautoconsole
 
 echo
-echo "=========================================================="
 echo "VM '$NAME' Berhasil Dibuat dan Sedang Berjalan!"
-echo "=========================================================="
 VNC_PORT="$($VIRSH vncdisplay $NAME 2>/dev/null || echo 'N/A')"
 echo "Alokasi Antarmuka VirtIO:"
 echo "  1. vtnet0 (MAC 52:54:00:04:00:20) -> libvirt 'default' (Mgmt/LAN GUI: 192.168.122.20)"
@@ -86,4 +82,3 @@ echo
 echo "  [OPSI B - Konsol Teks/Serial]:"
 echo "    virsh --connect qemu:///system console $NAME"
 echo "    (Tekan Ctrl + ] untuk keluar dari konsol virsh)"
-echo "=========================================================="

@@ -40,10 +40,8 @@ pause_step() {
 }
 
 clear || true
-echo -e "${BOLD}${CYAN}========================================================================================${RESET}"
 echo -e "${BOLD}${CYAN}  LIVE DEMO 2 MENIT: DIGITAL FORENSICS & INCIDENT RESPONSE (DFIR) WALKTHROUGH           ${RESET}"
 echo -e "${BOLD}${CYAN}  Kesiapan ISO/IEC 27037, Live Triage RFC 3227, & Super-Timeline Multi-Sumber          ${RESET}"
-echo -e "${BOLD}${CYAN}========================================================================================${RESET}"
 echo -e "Waktu Mulai: $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
 echo -e "Investigator: ${BOLD}Natanael Simanjuntak${RESET} (Lead DFIR & Security Architect)"
 echo -e "Arsitektur : 14 VM KVM (Spine-Leaf EVPN Fabric, OPNsense SPI, Zeek NSM, OpenCanary)"
@@ -151,13 +149,10 @@ if [ -f "${SCRIPT_DIR}/dfir/reports/INCIDENT-REPORT-CASE-02-LATERAL-SSH.md" ]; t
 fi
 
 echo
-echo -e "${BOLD}${GREEN}========================================================================================${RESET}"
 echo -e "${BOLD}${GREEN}  KESIMPULAN AUDIT & HASIL AKHIR INVESTIGASI FORENSIK DIGITAL (DFIR)                    ${RESET}"
-echo -e "${BOLD}${GREEN}========================================================================================${RESET}"
 echo -e "  1. Rekonstruksi Super-Timeline : ${BOLD}${GREEN}Presisi Sub-Mikrodetik UTC ISO 8601 Berhasil Dibuat${RESET}"
 echo -e "  2. Pembuktian Kebocoran Data   : ${BOLD}${GREEN}0 BYTE TEREKSFILTRASI (0 dari 42 Record Bocor)${RESET}"
 echo -e "  3. Pembuktian Pergerakan Lateral: ${BOLD}${GREEN}0% PROGRESI LATERAL (Penyerang Terkunci Total di Web DMZ)${RESET}"
 echo -e "  4. Kepatuhan Standar Hukum     : ${BOLD}${GREEN}100% ISO/IEC 27037:2012 & NIST SP 800-61 Rev 2 Compliant${RESET}"
-echo -e "${BOLD}${GREEN}========================================================================================${RESET}"
 echo -e "Waktu Selesai: $(date -u '+%Y-%m-%d %H:%M:%S UTC') (Durasi Demo: ~120 Detik)"
 echo

@@ -253,16 +253,13 @@ EOF
 }
 META_EOF
 
-  echo "=========================================================="
   echo "Bukti Jaringan Berhasil Diamankan (ISO/IEC 27037 Compliant)"
-  echo "=========================================================="
   echo "Evidence ID : ${EVD_ID}"
   echo "Berkas PCAP : ${LOCAL_PCAP}"
   echo "Ukuran      : ${FILE_SIZE} bytes"
   echo "SHA-256     : ${SHA256}"
   echo "Metadata    : ${LOCAL_META}"
   echo "Hak Akses   : Read-Only (0440)"
-  echo "=========================================================="
   exit 0
 fi
 
@@ -275,16 +272,13 @@ fi
 REMOTE_PCAP="/var/forensics/network/${OUTPUT_NAME}"
 START_TIME=$(date -u +"%Y-%m-%dT%H:%M:%S.000Z")
 
-echo "=========================================================="
 echo "Memulai Akuisisi Bukti Jaringan Mentah (br-sensor)"
-echo "=========================================================="
 echo "Case ID     : ${CASE_ID}"
 echo "Evidence ID : ${EVIDENCE_ID}"
 echo "Interface   : br-sensor (secops)"
 echo "Target File : ${REMOTE_PCAP}"
 echo "BPF Filter  : ${BPF_FILTER:-"(semua paket)"}"
 echo "Waktu Mulai : ${START_TIME}"
-echo "=========================================================="
 
 if [ "$ACTION" = "start" ]; then
   if [ "$IS_LOCAL" = true ]; then
@@ -439,14 +433,11 @@ EOF
 }
 META_EOF
 
-  echo "=========================================================="
   echo "Bukti Jaringan Berhasil Diamankan (ISO/IEC 27037 Compliant)"
-  echo "=========================================================="
   echo "Evidence ID : ${EVIDENCE_ID}"
   echo "Berkas PCAP : ${LOCAL_PCAP}"
   echo "Ukuran      : ${FILE_SIZE} bytes"
   echo "SHA-256     : ${SHA256}"
   echo "Metadata    : ${LOCAL_META}"
   echo "Hak Akses   : Read-Only (0440)"
-  echo "=========================================================="
 fi

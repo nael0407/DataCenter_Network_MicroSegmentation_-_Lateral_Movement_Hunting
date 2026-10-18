@@ -25,10 +25,8 @@ YELLOW="\033[0;33m"
 CYAN="\033[0;36m"
 RESET="\033[0m"
 
-echo -e "${BOLD}${CYAN}======================================================================${RESET}"
 echo -e "${BOLD}${CYAN}   MASTER TEST HARNESS: DATA CENTER ZERO-TRUST MICRO-SEGMENTATION    ${RESET}"
 echo -e "${BOLD}${CYAN}   Proyek 4: Spine-Leaf EVPN/VXLAN, OPNsense SPI, & Threat Hunting   ${RESET}"
-echo -e "${BOLD}${CYAN}======================================================================${RESET}"
 echo -e "Waktu Mulai : $(date '+%Y-%m-%d %H:%M:%S')"
 echo -e "Direktori   : $ROOT_DIR"
 echo
@@ -168,10 +166,8 @@ tinggi terhadap bencana infrastruktur fisik, dan mempertahankan kinerja data cen
 ======================================================================
 EOF
 
-echo -e "${BOLD}${GREEN}======================================================================${RESET}"
 echo -e "${BOLD}${GREEN}   SELURUH VERIFIKASI END-TO-END BERHASIL DIEKSEKUSI 100%!           ${RESET}"
 echo -e "${BOLD}${GREEN}   Status: $PASSED_TESTS/$TOTAL_TESTS Suite Pengujian Lulus Tanpa Error.            ${RESET}"
-echo -e "${BOLD}${GREEN}======================================================================${RESET}"
 echo -e "Laporan konsolidasi akhir tersimpan di: ${CYAN}$FINAL_REPORT${RESET}"
 echo
 cat "$FINAL_REPORT"

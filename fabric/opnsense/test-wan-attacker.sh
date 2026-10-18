@@ -11,10 +11,8 @@ BRIDGE="br-ext-sim"
 ATK_IP="203.0.113.91/24"
 WAN_GW="203.0.113.1"
 
-echo "=========================================================="
 echo "Pengujian Simulasi Attacker Eksternal (WAN: 203.0.113.0/24)"
 echo "Target Firewall: OPNsense WAN Gateway ($WAN_GW)"
-echo "=========================================================="
 
 cleanup() {
   sudo ip netns del "$NS" 2>/dev/null || true
@@ -38,9 +36,7 @@ sudo ip netns exec "$NS" ip route add default via "$WAN_GW" dev "$VETH_NS"
 echo "[OK] Host Attacker siap (IP: 203.0.113.91, Default Gateway: $WAN_GW)"
 
 echo
-echo "=========================================================="
 echo "BAGIAN A: Uji Keterjangkauan Gateway WAN OPNsense (203.0.113.1)"
-echo "=========================================================="
 if sudo ip netns exec "$NS" ping -c 3 -W 2 "$WAN_GW"; then
   echo ">>> [Attacker -> OPNsense WAN]: SUCCESS (Gateway WAN Merespons)"
 else
@@ -50,9 +46,7 @@ else
 fi
 
 echo
-echo "=========================================================="
 echo "BAGIAN B: Uji Port Publikasi Web (Port Forwarding NAT Port 80)"
-echo "=========================================================="
 echo "Menguji akses TCP ke port 80 pada WAN IP ($WAN_GW)..."
 if sudo ip netns exec "$NS" nc -zv -w 2 "$WAN_GW" 80 >/dev/null 2>&1; then
   echo ">>> [Attacker -> Port 80]: SUCCESS (Port Terbuka / Diteruskan ke Web DMZ)"
@@ -61,9 +55,7 @@ else
 fi
 
 echo
-echo "=========================================================="
 echo "BAGIAN C: Uji Pemblokiran Zona Internal dari Luar (Skenario S7)"
-echo "=========================================================="
 echo "1. Attacker mencoba menjangkau Host di Zona Database (10.10.30.11)..."
 if sudo ip netns exec "$NS" ping -c 2 -W 2 10.10.30.11 >/dev/null 2>&1; then
   echo ">>> [WARNING] Trafik tembus ke host internal Database!"
@@ -92,6 +84,4 @@ else
 fi
 
 echo
-echo "=========================================================="
 echo "Pengujian Simulasi Attacker Selesai & Namespace Dibersihkan"
-echo "=========================================================="

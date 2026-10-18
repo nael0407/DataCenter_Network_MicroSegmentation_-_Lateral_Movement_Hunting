@@ -42,13 +42,11 @@ def main():
 
     targets = [t.strip() for t in args.targets.split(",") if t.strip()] if args.targets else WEB_TARGETS
 
-    print("==========================================================")
     print("3-Tier Workload Baseline Traffic Generator (Fase 5)")
     print(f"Target Web Tier : {', '.join(targets)}")
     print(f"Random Jitter   : {args.min_interval}s s/d {args.max_interval}s")
     print(f"Aktivitas Admin : Setiap ~{args.admin_interval}s")
     print("Tekan Ctrl+C untuk menghentikan generator.")
-    print("==========================================================")
     sys.stdout.flush()
 
     req_num = 0

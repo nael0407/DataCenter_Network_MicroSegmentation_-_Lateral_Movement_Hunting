@@ -10,11 +10,9 @@ SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5"
 OUTPUT_FILE="attack-tests/results-s01-baseline.txt"
 
-echo "=========================================================="
 echo "Skenario S1: Pemindaian Lateral dari web1 (MITRE T1046/T1018)"
 echo "Mode: BASELINE PERMISIF (Sebelum Pengerasan Microsegmentation)"
 echo "Sumber: web1 (10.10.10.11) | Target: Zona App, DB, & Canary"
-echo "=========================================================="
 
 SCAN_PORTS="21,22,23,80,443,1433,2222,3306,5432,6379,8080,8443"
 TARGET_HOSTS="10.10.20.11 10.10.20.12 10.10.30.11 10.10.50.11"
@@ -107,7 +105,5 @@ print(f"  [OK] Zeek Telemetri: Menemukan {len(zeek_conns)} rekaman koneksi pemin
 EOF
 
 echo
-echo "=========================================================="
 echo "Skenario S1 Selesai dieksekusi!"
 echo "Hasil ringkasan tersimpan di: $OUTPUT_FILE"
-echo "=========================================================="

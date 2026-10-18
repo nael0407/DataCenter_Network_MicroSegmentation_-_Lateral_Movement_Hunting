@@ -10,11 +10,9 @@ SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTim
 OUTPUT_FILE="attack-tests/results-s02-hardened.txt"
 KEY_FILE="/tmp/compromised_id_ed25519"
 
-echo "=========================================================="
 echo "Skenario S2: Pergerakan Lateral Berantai SSH (MITRE T1021.004)"
 echo "Mode: HARDENED / POST-HARDENING (Microsegmentation Enforced)"
 echo "Rantai: web1 (10.10.10.11) -> app1 (10.10.20.11) -> db1 (10.10.30.11)"
-echo "=========================================================="
 
 START_TIME=$(date +%s.%N)
 
@@ -124,7 +122,5 @@ else:
 EOF
 
 echo
-echo "=========================================================="
 echo "Skenario S2 (Hardened) Selesai dieksekusi!"
 echo "Hasil tersimpan di: $OUTPUT_FILE"
-echo "=========================================================="

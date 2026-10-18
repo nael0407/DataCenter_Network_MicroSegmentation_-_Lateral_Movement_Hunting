@@ -6,9 +6,7 @@ set -euo pipefail
 
 SSH_KEY="$HOME/.ssh/k8s-lab"
 
-echo "=========================================================="
 echo "Konfigurasi Data-Plane EVPN/VXLAN (Bridge & VXLAN per VNI)"
-echo "=========================================================="
 
 # -----------------------------------------------------------------------------
 # 1. leaf1: VNI 10010 (Web Zone)
@@ -201,9 +199,7 @@ systemctl enable --now overlay-dataplane.service
 EOF
 
 echo
-echo "=========================================================="
 echo "Verifikasi Status Data-Plane di Ketiga Leaf Nodes:"
-echo "=========================================================="
 
 echo ">>> [leaf1] Daftar Bridge & Slave Ports:"
 ssh -i "$SSH_KEY" "dcadmin@192.168.122.31" "bridge link show"

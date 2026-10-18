@@ -10,11 +10,9 @@ SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTim
 OUTPUT_FILE="attack-tests/results-s02-baseline.txt"
 KEY_FILE="/tmp/compromised_id_ed25519"
 
-echo "=========================================================="
 echo "Skenario S2: Pergerakan Lateral Berantai SSH (MITRE T1021.004)"
 echo "Mode: BASELINE PERMISIF (Sebelum Pengerasan Microsegmentation)"
 echo "Rantai: web1 (10.10.10.11) -> app1 (10.10.20.11) -> db1 (10.10.30.11)"
-echo "=========================================================="
 
 # 1. Pastikan kunci uji compromised ada di web1
 echo "--- 1. Memeriksa Kredensial Uji Kompromi di web1 ---"
@@ -127,7 +125,5 @@ if sshd_events:
 EOF
 
 echo
-echo "=========================================================="
 echo "Skenario S2 Selesai dieksekusi!"
 echo "Hasil ringkasan tersimpan di: $OUTPUT_FILE"
-echo "=========================================================="

@@ -145,7 +145,4 @@ Percobaan eksfiltrasi dipicu oleh akun pengguna yang memiliki akses eksekusi she
 
 Laporan ini disusun secara obyektif berdasarkan bukti digital yang terkumpul, diaudit, dan diverifikasi sesuai kaidah integritas rantai bukti hukum internasional (ISO/IEC 27037:2012). Seluruh artefak bukti digital mentah tersimpan dalam status terarsip dan terkunci di *Evidence Vault*.
 
-**Investigator Forensik Bertanggung Jawab:**  
-*Natanael Simanjuntak*  
-Lead DFIR Incident Responder & Cloud Security Architect  
 `Signature: SHA256[8c9b7552e51136abf5c7d63af1dd3e6d1bc5e46afee54ebd5dbf9caa3bd0ab87]`

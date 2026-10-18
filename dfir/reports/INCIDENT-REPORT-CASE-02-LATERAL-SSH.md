@@ -152,7 +152,4 @@ Infrastruktur membuktikan ketahanan absolut terhadap upaya pergerakan lateral be
 
 Laporan ini disusun secara obyektif berdasarkan bukti digital yang terkumpul, diaudit, dan diverifikasi sesuai kaidah integritas rantai bukti hukum internasional (ISO/IEC 27037:2012). Seluruh artefak bukti digital mentah tersimpan dalam status terarsip dan terkunci di *Evidence Vault*.
 
-**Investigator Forensik Bertanggung Jawab:**  
-*Natanael Simanjuntak*  
-Lead DFIR Incident Responder & Cloud Security Architect  
 `Signature: SHA256[b189c6293b93378bbbfd4b28cbfc3530ecf0e5e86b4d1f29e737d79dedb16d5a]`

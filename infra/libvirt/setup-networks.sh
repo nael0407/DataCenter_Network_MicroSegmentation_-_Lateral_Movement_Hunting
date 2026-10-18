@@ -38,9 +38,7 @@ NETWORKS=(
   "mirror-l3:br-mir-l3:Mirror Trafik Ingress Leaf3 ke SecOps"
 )
 
-echo "=========================================================="
 echo "Membuat dan mengaktifkan 16 jaringan libvirt isolated..."
-echo "=========================================================="
 
 for item in "${NETWORKS[@]}"; do
   IFS=":" read -r net_name br_name desc <<< "$item"
@@ -79,9 +77,7 @@ EOF
 done
 
 echo
-echo "=========================================================="
 echo "Verifikasi status seluruh jaringan libvirt:"
-echo "=========================================================="
 $VIRSH net-list --all
 
 echo

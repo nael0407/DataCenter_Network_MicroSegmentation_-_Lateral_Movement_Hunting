@@ -8,10 +8,8 @@ SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo "=========================================================="
 echo "Penyebaran Aplikasi 3-Tier Mock Workload (Fase 5 - Langkah 5.6)"
 echo "Target: web1-2 (:80) -> app1-2 (:8080) -> db1 (:5432)"
-echo "=========================================================="
 
 # 1. Penyebaran Database Tier (db1: 10.10.30.11)
 echo "--- [1/3] Menyebarkan Mock DB Server di db1 (10.10.30.11:5432) ---"
@@ -119,6 +117,4 @@ EOF
 done
 
 echo
-echo "=========================================================="
 echo "Seluruh Layanan 3-Tier Mock Workload Berhasil Disebarkan!"
-echo "=========================================================="

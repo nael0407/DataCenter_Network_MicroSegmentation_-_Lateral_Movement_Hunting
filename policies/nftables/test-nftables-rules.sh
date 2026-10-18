@@ -8,10 +8,8 @@ SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=3"
 BASTION="192.168.122.81"
 
-echo "=========================================================="
 echo "Verifikasi Host-based Micro-segmentation (nftables)"
 echo "Mode: ROLE-BASED ZERO-TRUST FILTERING (Tiap Host Mengontrol Akses)"
-echo "=========================================================="
 
 echo
 echo "--- [BAGIAN 1] Status Layanan nftables.service pada Seluruh Node ---"
@@ -85,6 +83,4 @@ else
 fi
 
 echo
-echo "=========================================================="
 echo "Seluruh Pengujian Host-based Micro-segmentation Selesai!"
-echo "=========================================================="

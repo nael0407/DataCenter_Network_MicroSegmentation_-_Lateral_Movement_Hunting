@@ -13,11 +13,9 @@ OUTPUT_FILE="attack-tests/results-s09-link-failure.txt"
 LEAF1_MAC_S1="52:54:00:04:11:11"
 SPINE1_IP="10.254.0.0"
 
-echo "=========================================================="
 echo "Skenario S9: Uji Ketahanan Link Fabric & Konvergensi BFD/ECMP"
 echo "Target Injeksi: Link leaf1 (eth1) <-> spine1 (eth1)"
 echo "Metode Injeksi: virsh domif-setlink leaf1 $LEAF1_MAC_S1 down/up"
-echo "=========================================================="
 
 mkdir -p attack-tests
 
@@ -196,7 +194,5 @@ Metode    : virsh domif-setlink leaf1 52:54:00:04:11:11 down/up
 EOF
 
 echo
-echo "=========================================================="
 echo "Skenario S9 Selesai dieksekusi!"
 echo "Laporan ringkasan tersimpan di: $OUTPUT_FILE"
-echo "=========================================================="

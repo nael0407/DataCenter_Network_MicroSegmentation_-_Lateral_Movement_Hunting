@@ -15,9 +15,7 @@ NODES=(
   "leaf3:192.168.122.33:65003:10.255.0.13"
 )
 
-echo "=========================================================="
 echo "Konfigurasi Dasar FRR (Daemons, Grup VTY, & BGP Router-ID)"
-echo "=========================================================="
 
 for node_info in "${NODES[@]}"; do
   IFS=':' read -r name ip asn router_id <<< "$node_info"
@@ -63,9 +61,7 @@ EOF
 done
 
 echo
-echo "=========================================================="
 echo "Verifikasi Status Daemon & Running-Config di Semua Node:"
-echo "=========================================================="
 
 for node_info in "${NODES[@]}"; do
   IFS=':' read -r name ip asn router_id <<< "$node_info"

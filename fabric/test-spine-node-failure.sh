@@ -11,11 +11,9 @@ SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5"
 OUTPUT_FILE="attack-tests/results-s09-spine-failover.txt"
 
-echo "=========================================================="
 echo "Skenario S9: Uji Ketahanan Kegagalan Total Node Spine"
 echo "Target Injeksi : spine1 (192.168.122.21 / AS 65000)"
 echo "Metode Injeksi : virsh destroy spine1 -> virsh start spine1"
-echo "=========================================================="
 
 mkdir -p attack-tests
 
@@ -191,7 +189,5 @@ Metode    : virsh destroy spine1 -> virsh start spine1
 EOF
 
 echo
-echo "=========================================================="
 echo "Skenario S9 (Spine Node Failure) Selesai dieksekusi!"
 echo "Laporan ringkasan tersimpan di: $OUTPUT_FILE"
-echo "=========================================================="

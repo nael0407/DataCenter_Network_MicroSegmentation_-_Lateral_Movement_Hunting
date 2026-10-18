@@ -6,9 +6,7 @@ set -euo pipefail
 
 SSH_KEY="$HOME/.ssh/k8s-lab"
 
-echo "=========================================================="
 echo "Konfigurasi eBGP Underlay & ECMP di 5 Node Fabric"
-echo "=========================================================="
 
 # 1. Konfigurasi spine1
 echo "--- [spine1 (192.168.122.21)] Menerapkan eBGP Underlay ---"
@@ -198,9 +196,7 @@ echo "Menunggu konvergensi sesi BGP (5 detik)..."
 sleep 5
 
 echo
-echo "=========================================================="
 echo "Verifikasi Ringkasan BGP (show ip bgp summary) di Seluruh Node"
-echo "=========================================================="
 
 NODES=(
   "spine1:192.168.122.21"
@@ -217,9 +213,7 @@ for item in "${NODES[@]}"; do
   echo
 done
 
-echo "=========================================================="
 echo "Verifikasi Rute BGP di leaf1 (Harus memiliki multipath/ECMP ke loopback leaf lain):"
-echo "=========================================================="
 ssh -i "$SSH_KEY" -o ConnectTimeout=5 "dcadmin@192.168.122.31" "vtysh -c 'show ip route bgp'"
 
 echo

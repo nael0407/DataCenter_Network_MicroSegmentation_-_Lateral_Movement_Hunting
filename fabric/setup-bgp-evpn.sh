@@ -6,9 +6,7 @@ set -euo pipefail
 
 SSH_KEY="$HOME/.ssh/k8s-lab"
 
-echo "=========================================================="
 echo "Konfigurasi BGP EVPN (L2 VNI Bridged Overlay) di 5 Node"
-echo "=========================================================="
 
 # -----------------------------------------------------------------------------
 # 1. spine1 (Transit EVPN dengan attribute-unchanged next-hop)
@@ -272,9 +270,7 @@ echo "Menunggu konvergensi sesi BGP EVPN (5 detik)..."
 sleep 5
 
 echo
-echo "=========================================================="
 echo "BAGIAN 1: Ringkasan Sesi BGP EVPN (show bgp l2vpn evpn summary)"
-echo "=========================================================="
 
 NODES=(
   "spine1:192.168.122.21"
@@ -291,9 +287,7 @@ for item in "${NODES[@]}"; do
   echo
 done
 
-echo "=========================================================="
 echo "BAGIAN 2: Status Penemuan VNI & Remote VTEP di Leaf Nodes"
-echo "=========================================================="
 for item in "leaf1:192.168.122.31" "leaf2:192.168.122.32" "leaf3:192.168.122.33"; do
   IFS=':' read -r name ip <<< "$item"
   echo ">>> [$name] show evpn vni:"
@@ -301,9 +295,7 @@ for item in "leaf1:192.168.122.31" "leaf2:192.168.122.32" "leaf3:192.168.122.33"
   echo
 done
 
-echo "=========================================================="
 echo "BAGIAN 3: Verifikasi Rute EVPN Tipe-3 (Inclusive Multicast / IMET)"
-echo "=========================================================="
 echo ">>> [leaf1] Rute Tipe-3 untuk VNI 10010 (Harus menemukan Remote VTEP leaf3 10.255.0.13):"
 ssh -i "$SSH_KEY" "dcadmin@192.168.122.31" "vtysh -c 'show bgp l2vpn evpn route type 3'"
 
@@ -312,9 +304,7 @@ echo ">>> [leaf3] Rute Tipe-3 untuk VNI 10010 & 10020 (Harus menemukan leaf1 10.
 ssh -i "$SSH_KEY" "dcadmin@192.168.122.33" "vtysh -c 'show bgp l2vpn evpn route type 3'"
 
 echo
-echo "=========================================================="
 echo "BAGIAN 4: Uji Pembelajaran & Penyebaran Rute EVPN Tipe-2 (MAC)"
-echo "=========================================================="
 echo "Mensimulasikan frame Ethernet lokal di leaf1 eth3 (Zona Web MAC: 52:54:00:10:00:01)..."
 ssh -i "$SSH_KEY" "dcadmin@192.168.122.31" sudo bash << 'EOF'
 # Daftarkan entri MAC statis pada port akses eth3 untuk simulasi host lokal

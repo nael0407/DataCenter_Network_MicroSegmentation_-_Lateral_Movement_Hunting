@@ -12,9 +12,7 @@ NODES=(
   "leaf3:192.168.122.33"
 )
 
-echo "=========================================================="
 echo "Memasang dan mengunci versi FRRouting (FRR) di 5 node..."
-echo "=========================================================="
 
 for item in "${NODES[@]}"; do
   IFS=':' read -r name ip <<< "$item"
@@ -36,9 +34,7 @@ EOF
 done
 
 echo
-echo "=========================================================="
 echo "Verifikasi versi FRR yang terpasang di seluruh node:"
-echo "=========================================================="
 
 for item in "${NODES[@]}"; do
   IFS=':' read -r name ip <<< "$item"

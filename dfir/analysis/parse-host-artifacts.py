@@ -518,9 +518,7 @@ class HostArtifactParser:
         """Tampilkan dasbor ringkasan ke terminal."""
         target_host = self.metadata.get("TARGET_NAME", "host")
         print()
-        print(f"{BOLD}{CYAN}======================================================================{RESET}")
         print(f"{BOLD}{CYAN}           HASIL ANALISIS ARTEFAK HOST TRIAGE (RFC 3227)             {RESET}")
-        print(f"{BOLD}{CYAN}======================================================================{RESET}")
         print(f"  Target Host         : {BOLD}{target_host.upper()}{RESET} ({self.metadata.get('HOSTNAME', '-')})")
         print(f"  Evidence Source     : {self.triage_source}")
         print(f"  ID Kasus Forensik   : {self.case_id}")
@@ -560,7 +558,6 @@ class HostArtifactParser:
 
         print(f"{BOLD}{GREEN}[SUCCESS] Laporan analisis host tersimpan di:{RESET}")
         print(f"  -> {report_path}")
-        print(f"{BOLD}{CYAN}======================================================================{RESET}")
         print()
 
     def cleanup(self):

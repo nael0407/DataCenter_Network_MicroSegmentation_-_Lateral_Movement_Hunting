@@ -13,11 +13,9 @@ SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5"
 OUTPUT_FILE="attack-tests/results-s10-spoofing.txt"
 
-echo "=========================================================="
 echo "Skenario S10: Uji Ketahanan Terhadap IP Spoofing Lintas-Zona"
 echo "Sumber Injeksi : web1 (10.10.10.11 / Web DMZ VLAN 10)"
 echo "Target Uji     : db1:5432 (DB), app1:22 (SSH), app1:8080 (API)"
-echo "=========================================================="
 
 mkdir -p attack-tests
 START_TS=$(date +%s.%N)
@@ -227,7 +225,5 @@ KESIMPULAN PERTAHANAN ANTI-SPOOFING (S10):
 EOF
 
 echo
-echo "=========================================================="
 echo "Skenario S10 Selesai dieksekusi!"
 echo "Laporan ringkasan tersimpan di: $OUTPUT_FILE"
-echo "=========================================================="

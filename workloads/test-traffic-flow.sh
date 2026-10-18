@@ -8,10 +8,8 @@ SSH_KEY="$HOME/.ssh/k8s-lab"
 SSH_OPTS="-i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=no -o ConnectTimeout=5"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo "=========================================================="
 echo "Pengujian Alur Trafik Cascading 3-Tier (Client -> Web -> App -> DB)"
 echo "Target: web1 (10.10.10.11), web2 (10.10.10.12), WAN NAT (203.0.113.1:80)"
-echo "=========================================================="
 
 echo "--- 1. Memeriksa Status Layanan di Seluruh 5 Node Workload ---"
 for node in "db1:10.10.30.11:mock-db" "app1:10.10.20.11:mock-app" "app2:10.10.20.12:mock-app" "web1:10.10.10.11:mock-web" "web2:10.10.10.12:mock-web"; do
@@ -65,6 +63,4 @@ scp $SSH_OPTS "$SCRIPT_DIR/traffic-generator.py" dcadmin@203.0.113.11:/tmp/traff
 ssh $SSH_OPTS dcadmin@203.0.113.11 "python3 /tmp/traffic-generator.py --targets http://203.0.113.1/ --count 5 --min-interval 0.5 --max-interval 1.5 --admin-interval 5.0"
 
 echo
-echo "=========================================================="
 echo "Pengujian Alur Trafik Cascading 3-Tier Selesai (100% Lulus)!"
-echo "=========================================================="

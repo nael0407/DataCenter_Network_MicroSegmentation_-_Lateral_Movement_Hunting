@@ -210,7 +210,6 @@ def analyze_traffic_graph():
     out_degrees = dict(G.out_degree())
     sorted_out_degrees = sorted(out_degrees.items(), key=lambda x: x[1], reverse=True)
 
-    print("==========================================================")
     print("LAPORAN ANALISIS GRAF BASELINE & THREAT HUNTING (S8)")
     print(f"Waktu Analisis : {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
     print(f"Total Log Aliran : {len(df)} koneksi")
@@ -218,7 +217,6 @@ def analyze_traffic_graph():
     print(f"Total Tepi Unik  : {total_edges} kanal komunikasi")
     print(f"Tepi Normal      : {len(normal_edges)} kanal ({len(normal_edges)/total_edges*100:.1f}%)")
     print(f"Tepi Anomali     : {total_anomalies} kanal ({total_anomalies/total_edges*100:.1f}%)")
-    print("==========================================================")
 
     print("\n--- 1. Matriks Out-Degree Sentralitas (Deteksi Pivot Lateral Terbesar) ---")
     for node, degree in sorted_out_degrees[:6]:
