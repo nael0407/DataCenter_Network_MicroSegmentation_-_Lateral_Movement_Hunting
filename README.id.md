@@ -297,9 +297,7 @@ dc-microseg-lab/
 
 ---
 
-## Lisensi & Penulis
-- **Penulis:** Natanael Simanjuntak
+## Lisensi
 - **Standar Arsitektur:** NIST SP 800-207 (Zero-Trust Architecture)
 - **Standar Forensik:** ISO/IEC 27037:2012, RFC 3227, & NIST SP 800-61 Rev 2
 - **Framework Ancaman:** MITRE ATT&CK for Enterprise
-- **Lisensi:** MIT License

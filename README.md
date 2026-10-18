@@ -296,9 +296,7 @@ dc-microseg-lab/
 
 ---
 
-## License & Author
-- **Author:** Natanael Simanjuntak
+## License 
 - **Zero-Trust Standard:** NIST SP 800-207 (Zero-Trust Architecture)
 - **Forensic Standards:** ISO/IEC 27037:2012, RFC 3227, & NIST SP 800-61 Rev 2
 - **Threat Framework:** MITRE ATT&CK for Enterprise
-- **License:** MIT License
